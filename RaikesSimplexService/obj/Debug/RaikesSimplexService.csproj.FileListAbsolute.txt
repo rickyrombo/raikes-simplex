@@ -1,0 +1,18 @@
+C:\Users\Neema\documents\visual studio 2010\Projects\RaikesSimplexSolver\RaikesSimplexService\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Neema\documents\visual studio 2010\Projects\RaikesSimplexSolver\RaikesSimplexService\bin\Debug\RaikesSimplexService.dll.config
+C:\Users\Neema\documents\visual studio 2010\Projects\RaikesSimplexSolver\RaikesSimplexService\bin\Debug\RaikesSimplexService.dll
+C:\Users\Neema\documents\visual studio 2010\Projects\RaikesSimplexSolver\RaikesSimplexService\bin\Debug\RaikesSimplexService.pdb
+C:\Users\Neema\documents\visual studio 2010\Projects\RaikesSimplexSolver\RaikesSimplexService\obj\Debug\RaikesSimplexService.dll
+C:\Users\Neema\documents\visual studio 2010\Projects\RaikesSimplexSolver\RaikesSimplexService\obj\Debug\RaikesSimplexService.pdb
+C:\Users\David\Downloads\RaikesSimplexSolver\RaikesSimplexSolver\RaikesSimplexService\bin\Debug\RaikesSimplexService.dll.config
+C:\Users\David\Downloads\RaikesSimplexSolver\RaikesSimplexSolver\RaikesSimplexService\bin\Debug\RaikesSimplexService.dll
+C:\Users\David\Downloads\RaikesSimplexSolver\RaikesSimplexSolver\RaikesSimplexService\bin\Debug\RaikesSimplexService.pdb
+C:\Users\David\Downloads\RaikesSimplexSolver\RaikesSimplexSolver\RaikesSimplexService\obj\Debug\RaikesSimplexService.csprojResolveAssemblyReference.cache
+C:\Users\David\Downloads\RaikesSimplexSolver\RaikesSimplexSolver\RaikesSimplexService\obj\Debug\RaikesSimplexService.dll
+C:\Users\David\Downloads\RaikesSimplexSolver\RaikesSimplexSolver\RaikesSimplexService\obj\Debug\RaikesSimplexService.pdb
+C:\Users\David\Documents\Junior Fall Semester\RAIK283H Assisting\RaikesSimplexSolver\RaikesSimplexService\bin\Debug\RaikesSimplexService.dll.config
+C:\Users\David\Documents\Junior Fall Semester\RAIK283H Assisting\RaikesSimplexSolver\RaikesSimplexService\bin\Debug\RaikesSimplexService.dll
+C:\Users\David\Documents\Junior Fall Semester\RAIK283H Assisting\RaikesSimplexSolver\RaikesSimplexService\bin\Debug\RaikesSimplexService.pdb
+C:\Users\David\Documents\Junior Fall Semester\RAIK283H Assisting\RaikesSimplexSolver\RaikesSimplexService\obj\Debug\RaikesSimplexService.csprojResolveAssemblyReference.cache
+C:\Users\David\Documents\Junior Fall Semester\RAIK283H Assisting\RaikesSimplexSolver\RaikesSimplexService\obj\Debug\RaikesSimplexService.dll
+C:\Users\David\Documents\Junior Fall Semester\RAIK283H Assisting\RaikesSimplexSolver\RaikesSimplexService\obj\Debug\RaikesSimplexService.pdb

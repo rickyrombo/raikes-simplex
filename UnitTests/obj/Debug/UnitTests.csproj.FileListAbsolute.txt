@@ -1,0 +1,21 @@
+C:\Users\Neema\documents\visual studio 2010\Projects\RaikesSimplexSolver\UnitTests\bin\Debug\UnitTests.dll
+C:\Users\Neema\documents\visual studio 2010\Projects\RaikesSimplexSolver\UnitTests\bin\Debug\UnitTests.pdb
+C:\Users\Neema\documents\visual studio 2010\Projects\RaikesSimplexSolver\UnitTests\bin\Debug\RaikesSimplexService.dll
+C:\Users\Neema\documents\visual studio 2010\Projects\RaikesSimplexSolver\UnitTests\bin\Debug\RaikesSimplexService.pdb
+C:\Users\Neema\documents\visual studio 2010\Projects\RaikesSimplexSolver\UnitTests\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Neema\documents\visual studio 2010\Projects\RaikesSimplexSolver\UnitTests\obj\Debug\UnitTests.dll
+C:\Users\Neema\documents\visual studio 2010\Projects\RaikesSimplexSolver\UnitTests\obj\Debug\UnitTests.pdb
+C:\Users\David\Downloads\RaikesSimplexSolver\RaikesSimplexSolver\UnitTests\bin\Debug\UnitTests.dll
+C:\Users\David\Downloads\RaikesSimplexSolver\RaikesSimplexSolver\UnitTests\bin\Debug\UnitTests.pdb
+C:\Users\David\Downloads\RaikesSimplexSolver\RaikesSimplexSolver\UnitTests\bin\Debug\RaikesSimplexService.dll
+C:\Users\David\Downloads\RaikesSimplexSolver\RaikesSimplexSolver\UnitTests\bin\Debug\RaikesSimplexService.pdb
+C:\Users\David\Downloads\RaikesSimplexSolver\RaikesSimplexSolver\UnitTests\obj\Debug\UnitTests.csprojResolveAssemblyReference.cache
+C:\Users\David\Downloads\RaikesSimplexSolver\RaikesSimplexSolver\UnitTests\obj\Debug\UnitTests.dll
+C:\Users\David\Downloads\RaikesSimplexSolver\RaikesSimplexSolver\UnitTests\obj\Debug\UnitTests.pdb
+C:\Users\David\Documents\Junior Fall Semester\RAIK283H Assisting\RaikesSimplexSolver\UnitTests\bin\Debug\UnitTests.dll
+C:\Users\David\Documents\Junior Fall Semester\RAIK283H Assisting\RaikesSimplexSolver\UnitTests\bin\Debug\UnitTests.pdb
+C:\Users\David\Documents\Junior Fall Semester\RAIK283H Assisting\RaikesSimplexSolver\UnitTests\bin\Debug\RaikesSimplexService.dll
+C:\Users\David\Documents\Junior Fall Semester\RAIK283H Assisting\RaikesSimplexSolver\UnitTests\bin\Debug\RaikesSimplexService.pdb
+C:\Users\David\Documents\Junior Fall Semester\RAIK283H Assisting\RaikesSimplexSolver\UnitTests\obj\Debug\UnitTests.csprojResolveAssemblyReference.cache
+C:\Users\David\Documents\Junior Fall Semester\RAIK283H Assisting\RaikesSimplexSolver\UnitTests\obj\Debug\UnitTests.dll
+C:\Users\David\Documents\Junior Fall Semester\RAIK283H Assisting\RaikesSimplexSolver\UnitTests\obj\Debug\UnitTests.pdb

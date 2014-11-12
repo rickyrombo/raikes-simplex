@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2B0EEC1C-A5CF-476E-BFFF-8B9747A74EF5}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		RaikesSimplexSolver.vsmdi = RaikesSimplexSolver.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaikesSimplexService", "RaikesSimplexService\RaikesSimplexService.csproj", "{C5FC0EF4-DF69-458A-9F6F-CFB46AF1CE75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{9EB380F7-4A64-4EEB-B263-79C32DA6E5F2}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = RaikesSimplexSolver.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C5FC0EF4-DF69-458A-9F6F-CFB46AF1CE75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5FC0EF4-DF69-458A-9F6F-CFB46AF1CE75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5FC0EF4-DF69-458A-9F6F-CFB46AF1CE75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5FC0EF4-DF69-458A-9F6F-CFB46AF1CE75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EB380F7-4A64-4EEB-B263-79C32DA6E5F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EB380F7-4A64-4EEB-B263-79C32DA6E5F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EB380F7-4A64-4EEB-B263-79C32DA6E5F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EB380F7-4A64-4EEB-B263-79C32DA6E5F2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
