@@ -7,7 +7,7 @@ using System.Text;
 using RaikesSimplexService.Contracts;
 using RaikesSimplexService.DataModel;
 
-namespace RaikesSimplexService.InsertTeamNameHere
+namespace RaikesSimplexService.Implementation
 {
     
     public class Solver : ISolver
