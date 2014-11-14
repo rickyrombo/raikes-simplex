@@ -17,14 +17,8 @@ namespace RaikesSimplexService.Implementation
             throw new NotImplementedException();
         }
 
-        public Model Standardize(Model nonstandard)
+        public Model Standardize(Model model)
         {
-            var model = new Model
-            {
-                Constraints = nonstandard.Constraints,
-                Goal = nonstandard.Goal,
-                GoalKind = nonstandard.GoalKind
-            };
             //Minimize => Maximize
             if (model.GoalKind == GoalKind.Minimize)
             {
