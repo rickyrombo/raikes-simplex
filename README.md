@@ -1,4 +1,4 @@
 raikes-simplex
 ==============
 
-SmashSquad's implementation of the two-phase simplex algorithm for linear programming
+xxxSmashSquad360xxx's implementation of the two-phase simplex algorithm for linear programming
