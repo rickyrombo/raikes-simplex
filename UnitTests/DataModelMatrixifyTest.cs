@@ -11,11 +11,11 @@ namespace UnitTests
 
 
     /// <summary>
-    ///This is a test class for SolverTest and is intended
-    ///to contain all SolverTest Unit Tests
+    ///This is a test class for DataModelMatrixify and is intended
+    ///to contain all DataModelMatrixify Unit Tests
     ///</summary>
     [TestClass()]
-    public class SolverTest
+    public class DataModelMatrixifyTest
     {
         private TestContext testContextInstance;
         private Model testModel;
@@ -89,84 +89,11 @@ namespace UnitTests
         #endregion
 
         [TestMethod()]
-        public void StandardizeTest()
+        public void MatrixifyTest()
         {
             var solver = new Solver();
             var model = solver.Standardize(testModel);
-            var actualCount = testModel.Constraints.First().Coefficients.Count();
-            var slackCount = testModel.Constraints.Count(s => s.Relationship != Relationship.Equals);
-            Console.WriteLine(model.Stringify(actualCount, slackCount));
+            Console.WriteLine(model.Matrixify());
         }
-
-        /// <summary>
-        ///A test for Solve
-        ///</summary>
-        [TestMethod()]
-        public void ExampleSolveTest()
-        {
-            #region Arrange
-            var target = new Solver();
-
-            var lc1 = new LinearConstraint()
-            {
-                Coefficients = new double[2] { 8, 12 },
-                Relationship = Relationship.GreaterThanOrEquals,
-                Value = 24
-            };
-
-            var lc2 = new LinearConstraint()
-            {
-                Coefficients = new double[2] { 12, 12 },
-                Relationship = Relationship.GreaterThanOrEquals,
-                Value = 36
-            };
-
-            var lc3 = new LinearConstraint()
-            {
-                Coefficients = new double[2] { 2, 1 },
-                Relationship = Relationship.GreaterThanOrEquals,
-                Value = 4
-            };
-
-            var lc4 = new LinearConstraint()
-            {
-                Coefficients = new double[2] { 1, 1 },
-                Relationship = Relationship.LessThanOrEquals,
-                Value = 5
-            };
-
-            var constraints = new List<LinearConstraint>() { lc1, lc2, lc3, lc4 };
-
-            var goal = new Goal()
-            {
-                Coefficients = new double[2] { 0.2, 0.3 },
-                ConstantTerm = 0
-            };
-
-            var model = new Model()
-            {
-                Constraints = constraints,
-                Goal = goal,
-                GoalKind = GoalKind.Minimize
-            };
-
-            var expected = new Solution()
-            {
-                Decisions = new double[2] { 3, 0 },
-                Quality = SolutionQuality.Optimal,
-                AlternateSolutionsExist = false,
-                OptimalValue = 0.6
-            };
-            #endregion
-
-            //Act
-            var actual = target.Solve(model);
-
-            //Assert
-            CollectionAssert.AreEqual(expected.Decisions, actual.Decisions);
-            Assert.AreEqual(expected.Quality, actual.Quality);
-            Assert.AreEqual(expected.AlternateSolutionsExist, actual.AlternateSolutionsExist);
-        }
-
     }
 }
