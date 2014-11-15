@@ -1,8 +1,10 @@
-﻿using RaikesSimplexService.InsertTeamNameHere;
+﻿using RaikesSimplexService.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using RaikesSimplexService.DataModel;
+using RaikesSimplexService.Implementation.Extensions;
 
 namespace UnitTests
 {
@@ -16,6 +18,7 @@ namespace UnitTests
     public class SolverTest
     {
         private TestContext testContextInstance;
+        private Model testModel;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -50,10 +53,32 @@ namespace UnitTests
         //}
         //
         //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
+        [TestInitialize()]
+        public void MyTestInitialize()
+        {
+            testModel = new Model
+            {
+                Constraints = new List<LinearConstraint>
+                { 
+                    new LinearConstraint{
+                        Coefficients = new double[]{1, 3, 4},
+                        Relationship = Relationship.LessThanOrEquals,
+                        Value = 10,
+                    },
+                    new LinearConstraint{
+                        Coefficients = new double[]{4, 3, 2},
+                        Relationship = Relationship.GreaterThanOrEquals,
+                        Value = 50,
+                    }
+                },
+                Goal = new Goal
+                {
+                    Coefficients = new double[] { 2, 6, 4 },
+                    ConstantTerm = 20
+                },
+                GoalKind = GoalKind.Minimize,
+            };
+        }
         //
         //Use TestCleanup to run code after each test has run
         //[TestCleanup()]
@@ -64,6 +89,29 @@ namespace UnitTests
         #endregion
 
 
+        [TestMethod()]
+        public void PrintTest()
+        {
+            Console.WriteLine(testModel.Stringify());
+        }
+
+        [TestMethod()]
+        public void StandardizeTest()
+        {
+            var solver = new Solver();
+            var model = solver.Standardize(testModel);
+            var actualCount = testModel.Constraints.First().Coefficients.Count();
+            var slackCount = testModel.Constraints.Count(s => s.Relationship != Relationship.Equals);
+            Console.WriteLine(model.Stringify(actualCount, slackCount));
+        }
+
+        [TestMethod()]
+        public void MatrixifyTest()
+        {
+            var solver = new Solver();
+            var model = solver.Standardize(testModel);
+            Console.WriteLine(model.Matrixify());
+        }
         /// <summary>
         ///A test for Solve
         ///</summary>
