@@ -99,9 +99,9 @@ namespace UnitTests
         public void StandardizeTest()
         {
             var solver = new Solver();
+            var model = solver.Standardize(testModel);
             var actualCount = testModel.Constraints.First().Coefficients.Count();
             var slackCount = testModel.Constraints.Count(s => s.Relationship != Relationship.Equals);
-            var model = solver.Standardize(testModel);
             Console.WriteLine(model.Stringify(actualCount, slackCount));
         }
 
@@ -109,8 +109,6 @@ namespace UnitTests
         public void MatrixifyTest()
         {
             var solver = new Solver();
-            var actualCount = testModel.Constraints.First().Coefficients.Count();
-            var slackCount = testModel.Constraints.Count(s => s.Relationship != Relationship.Equals);
             var model = solver.Standardize(testModel);
             Console.WriteLine(model.Matrixify());
         }
