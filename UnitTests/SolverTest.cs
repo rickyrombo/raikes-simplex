@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using RaikesSimplexService.DataModel;
 using RaikesSimplexService.Implementation.Extensions;
+using UnitTests.Helpers;
 
 namespace UnitTests
 {
@@ -56,28 +57,7 @@ namespace UnitTests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            testModel = new Model
-            {
-                Constraints = new List<LinearConstraint>
-                { 
-                    new LinearConstraint{
-                        Coefficients = new double[]{1, 3, 4},
-                        Relationship = Relationship.LessThanOrEquals,
-                        Value = 10,
-                    },
-                    new LinearConstraint{
-                        Coefficients = new double[]{4, 3, 2},
-                        Relationship = Relationship.GreaterThanOrEquals,
-                        Value = 50,
-                    }
-                },
-                Goal = new Goal
-                {
-                    Coefficients = new double[] { 2, 6, 4 },
-                    ConstantTerm = 20
-                },
-                GoalKind = GoalKind.Minimize,
-            };
+            testModel = ModelHelper.getTestModel();
         }
         //
         //Use TestCleanup to run code after each test has run
