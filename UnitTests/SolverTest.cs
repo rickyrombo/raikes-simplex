@@ -18,7 +18,7 @@ namespace UnitTests
     public class SolverTest
     {
         private TestContext testContextInstance;
-        private Model testModel;
+        private Model testModel, testModel2;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -78,6 +78,33 @@ namespace UnitTests
                 },
                 GoalKind = GoalKind.Minimize,
             };
+            testModel2 = new Model
+            {
+                Constraints = new List<LinearConstraint>
+                {
+                    new LinearConstraint {
+                        Coefficients = new double[]{10, 5},
+                        Relationship = Relationship.LessThanOrEquals,
+                        Value = 50
+                    },
+                    new LinearConstraint {
+                        Coefficients = new double[]{6, 6},
+                        Relationship = Relationship.LessThanOrEquals,
+                        Value = 36
+                    },
+                    new LinearConstraint {
+                        Coefficients = new double[]{4.5, 18},
+                        Relationship = Relationship.LessThanOrEquals,
+                        Value = 81
+                    }
+                },
+                Goal = new Goal
+                {
+                    Coefficients = new double[] { 9, 7 },
+                    ConstantTerm = 0
+                },
+                GoalKind = GoalKind.Maximize
+            };
         }
         //
         //Use TestCleanup to run code after each test has run
@@ -98,8 +125,7 @@ namespace UnitTests
         [TestMethod()]
         public void StandardizeTest()
         {
-            var solver = new Solver();
-            var model = solver.Standardize(testModel);
+            var model = Solver.Standardize(testModel);
             var actualCount = testModel.Constraints.First().Coefficients.Count();
             var slackCount = testModel.Constraints.Count(s => s.Relationship != Relationship.Equals);
             Console.WriteLine(model.Stringify(actualCount, slackCount));
@@ -109,9 +135,21 @@ namespace UnitTests
         public void MatrixifyTest()
         {
             var solver = new Solver();
-            var model = solver.Standardize(testModel);
+            var model = Solver.Standardize(testModel);
             Console.WriteLine(model.Matrixify());
         }
+
+        [TestMethod()]
+        public void SolveExampleProblem()
+        {
+            var solver = new Solver();
+            var actual = solver.Solve(testModel2);
+            var expected = new Solution { AlternateSolutionsExist = false, OptimalValue = 50, Decisions = new double[] { 4, 2 } };
+            CollectionAssert.AreEqual(expected.Decisions, actual.Decisions);
+            Assert.AreEqual(expected.Quality, actual.Quality);
+            Assert.AreEqual(expected.AlternateSolutionsExist, actual.AlternateSolutionsExist);
+        }
+
         /// <summary>
         ///A test for Solve
         ///</summary>
