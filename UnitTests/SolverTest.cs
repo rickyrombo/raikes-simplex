@@ -72,10 +72,9 @@ namespace UnitTests
         public void StandardizeTest()
         {
             var solver = new Solver();
-            var model = solver.Standardize(testModel);
-            var actualCount = testModel.Constraints.First().Coefficients.Count();
-            var slackCount = testModel.Constraints.Count(s => s.Relationship != Relationship.Equals);
-            Console.WriteLine(model.Stringify(actualCount, slackCount));
+            Model actualModel = solver.Standardize(testModel);
+            Model expectedModel = ModelGenerator.getStandardizedSimpleModel();
+            Assert.IsTrue(actualModel.EqualValues(expectedModel));
         }
 
         /// <summary>

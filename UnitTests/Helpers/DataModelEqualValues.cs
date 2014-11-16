@@ -26,7 +26,6 @@ namespace RaikesSimplexService.Implementation.Extensions
         public static bool EqualValues(this List<LinearConstraint> self, List<LinearConstraint> other)
         {
             var linConstraintPairs = self.Zip(other, (a, b) => new { First = a, Second = b });
-            Console.WriteLine(linConstraintPairs.GetType());
             bool allPairsEqual = linConstraintPairs.All(pair => pair.First.EqualValues(pair.Second));
             return allPairsEqual;
         }
