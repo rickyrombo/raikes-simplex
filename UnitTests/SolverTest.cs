@@ -57,7 +57,7 @@ namespace UnitTests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            testModel = ModelHelper.getTestModel();
+            testModel = ModelHelper.getSimpleModel();
         }
         //
         //Use TestCleanup to run code after each test has run

@@ -8,7 +8,7 @@ namespace UnitTests.Helpers
 {
     public static class ModelHelper
     {
-        public static Model getTestModel()
+        public static Model getSimpleModel()
         {
             return new Model
             {
@@ -21,7 +21,7 @@ namespace UnitTests.Helpers
                     },
                     new LinearConstraint{
                         Coefficients = new double[]{4, 3, 2},
-                        Relationship = Relationship.GreaterThanOrEquals,
+                        Relationship = Relationship.LessThanOrEquals,
                         Value = 50,
                     }
                 },
@@ -30,7 +30,7 @@ namespace UnitTests.Helpers
                     Coefficients = new double[] { 2, 6, 4 },
                     ConstantTerm = 20
                 },
-                GoalKind = GoalKind.Minimize,
+                GoalKind = GoalKind.Maximize,
             };
         }
     }
