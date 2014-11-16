@@ -70,7 +70,7 @@ namespace UnitTests
 
 
         [TestMethod()]
-        public void StringifyTest()
+        public void SimpleStringifyTest()
         {
             String expectedStringification = "Constraints:\n1x1 + 3x2 + 4x3 <= 10\n4x1 + 3x2 + 2x3 <= 50, \nGoal:\nMaximize 2x1 + 6x2 + 4x3 = 20";
             StringifyTest(simpleModel, expectedStringification);

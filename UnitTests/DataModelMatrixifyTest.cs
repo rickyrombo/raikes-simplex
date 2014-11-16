@@ -69,7 +69,7 @@ namespace UnitTests
         #endregion
 
         [TestMethod()]
-        public void MatrixifyTest()
+        public void SimpleMatrixifyTest()
         {
             String expectedMatrixification = "LHS:\nDenseMatrix 2x3-Double\r\n1  3  4\r\n4  3  2\r\n\n\nRHS:\nDenseVector 2-Double\r\n10\r\n50\r\n\n\nObjective Row:\nDenseMatrix 1x4-Double\r\n2  6  4  20\r\n";
             MatrixifyTest(simpleModel, expectedMatrixification);
