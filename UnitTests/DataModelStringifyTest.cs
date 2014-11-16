@@ -72,7 +72,9 @@ namespace UnitTests
         [TestMethod()]
         public void StringifyTest()
         {
-            Console.WriteLine(testModel.Stringify());
+            String expectedValue = "Constraints:\n1x1 + 3x2 + 4x3 <= 10\n4x1 + 3x2 + 2x3 >= 50, \nGoal:\nMinimize 2x1 + 6x2 + 4x3 = 20";
+            String actualValue = testModel.Stringify();
+            Assert.AreEqual(expectedValue, actualValue);
         }
 
     }
