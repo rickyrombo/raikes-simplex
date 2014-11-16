@@ -19,7 +19,7 @@ namespace UnitTests
     public class DataModelMatrixifyTest
     {
         private TestContext testContextInstance;
-        private Model testModel;
+        private Model simpleModel;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -57,7 +57,7 @@ namespace UnitTests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            testModel = ModelGenerator.getSimpleModel();
+            simpleModel = ModelGenerator.getSimpleModel();
         }
         //
         //Use TestCleanup to run code after each test has run
@@ -72,7 +72,7 @@ namespace UnitTests
         public void MatrixifyTest()
         {
             String expectedValue = "LHS:\nDenseMatrix 2x3-Double\r\n1  3  4\r\n4  3  2\r\n\n\nRHS:\nDenseVector 2-Double\r\n10\r\n50\r\n\n\nObjective Row:\nDenseMatrix 1x4-Double\r\n2  6  4  20\r\n";
-            String actualValue = testModel.Matrixify();
+            String actualValue = simpleModel.Matrixify();
             Assert.AreEqual(expectedValue, actualValue);
         }
     }

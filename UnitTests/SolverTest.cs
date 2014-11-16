@@ -19,7 +19,7 @@ namespace UnitTests
     public class SolverTest
     {
         private TestContext testContextInstance;
-        private Model testModel;
+        private Model simpleModel;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -57,7 +57,7 @@ namespace UnitTests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            testModel = ModelGenerator.getSimpleModel();
+            simpleModel = ModelGenerator.getSimpleModel();
         }
         //
         //Use TestCleanup to run code after each test has run
@@ -72,7 +72,7 @@ namespace UnitTests
         public void StandardizeTest()
         {
             var solver = new Solver();
-            Model actualModel = solver.Standardize(testModel);
+            Model actualModel = solver.Standardize(simpleModel);
             Model expectedModel = ModelGenerator.getStandardizedSimpleModel();
             Assert.IsTrue(actualModel.EqualValues(expectedModel));
         }
