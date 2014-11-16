@@ -7,7 +7,6 @@ using System.Text;
 using RaikesSimplexService.Contracts;
 using RaikesSimplexService.DataModel;
 using MathNet.Numerics.LinearAlgebra;
-using RaikesSimplexService.Implementation.Extensions;
 
 namespace RaikesSimplexService.Implementation
 {

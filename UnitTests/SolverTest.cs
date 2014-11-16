@@ -4,7 +4,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using RaikesSimplexService.DataModel;
-using RaikesSimplexService.Implementation.Extensions;
 
 namespace UnitTests
 {
@@ -119,20 +118,22 @@ namespace UnitTests
         [TestMethod()]
         public void PrintTest()
         {
-            Console.WriteLine(testModel.Stringify());
+            var model = StandardModel.FromModel(testModel);
+            Console.WriteLine(model.ToString(false));
         }
 
         [TestMethod()]
         public void StandardizeTest()
         {
-            var model = StandardModel.FromModel(testModel2);
-            Console.WriteLine(model.ToString(true));
+            var model = StandardModel.FromModel(testModel);
+            Console.WriteLine(model.ToString());
         }
 
         [TestMethod()]
         public void MatrixifyTest()
         {
-         
+            var model = StandardModel.FromModel(testModel);
+            Console.WriteLine(model.ToString(true));
         }
 
         [TestMethod()]
