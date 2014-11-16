@@ -125,18 +125,14 @@ namespace UnitTests
         [TestMethod()]
         public void StandardizeTest()
         {
-            var model = Solver.Standardize(testModel);
-            var actualCount = testModel.Constraints.First().Coefficients.Count();
-            var slackCount = testModel.Constraints.Count(s => s.Relationship != Relationship.Equals);
-            Console.WriteLine(model.Stringify(actualCount, slackCount));
+            var model = StandardModel.FromModel(testModel2);
+            Console.WriteLine(model.ToString(true));
         }
 
         [TestMethod()]
         public void MatrixifyTest()
         {
-            var solver = new Solver();
-            var model = Solver.Standardize(testModel);
-            Console.WriteLine(model.Matrixify());
+         
         }
 
         [TestMethod()]
