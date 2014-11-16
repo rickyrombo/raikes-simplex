@@ -116,10 +116,17 @@ namespace UnitTests
 
 
         [TestMethod()]
+        public void PrintOriginalTest()
+        {
+            var model = StandardModel.FromModel(testModel);
+            Console.WriteLine(model.ToString(StandardModel.OutputFormat.Original));
+        }
+
+        [TestMethod()]
         public void PrintTest()
         {
             var model = StandardModel.FromModel(testModel);
-            Console.WriteLine(model.ToString(false));
+            Console.WriteLine(model.ToString(StandardModel.OutputFormat.Expression));
         }
 
         [TestMethod()]
@@ -133,7 +140,7 @@ namespace UnitTests
         public void MatrixifyTest()
         {
             var model = StandardModel.FromModel(testModel);
-            Console.WriteLine(model.ToString(true));
+            Console.WriteLine(model.ToString(StandardModel.OutputFormat.Matrix));
         }
 
         [TestMethod()]
