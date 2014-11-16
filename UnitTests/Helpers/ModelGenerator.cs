@@ -6,7 +6,7 @@ using RaikesSimplexService.DataModel;
 
 namespace UnitTests.Helpers
 {
-    public static class ModelHelper
+    public static class ModelGenerator
     {
         public static Model getSimpleModel()
         {
