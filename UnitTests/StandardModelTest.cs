@@ -56,7 +56,7 @@ namespace UnitTests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            simpleModel = StandardModelGenerator.getSimpleModel();
+            simpleModel = StandardModelGenerator.getSimpleStandardModel();
         }
         //
         //Use TestCleanup to run code after each test has run

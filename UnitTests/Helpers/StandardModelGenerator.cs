@@ -11,7 +11,7 @@ namespace UnitTests.Helpers
     {
         public static StandardModel getSimpleStandardModel()
         {
-            return StandardModel.FromModel(StandardModelGenerator.getSimpleModel());
+            return StandardModel.FromModel(ModelGenerator.getSimpleModel());
         }
     }
 }
