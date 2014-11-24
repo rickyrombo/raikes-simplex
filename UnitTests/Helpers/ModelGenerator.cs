@@ -9,10 +9,6 @@ namespace UnitTests.Helpers
 {
     public static class ModelGenerator
     {
-        public static StandardModel getSimpleStandardModel()
-        {
-            return StandardModel.FromModel(getSimpleModel());
-        }
 
         public static Model getSimpleModel()
         {
