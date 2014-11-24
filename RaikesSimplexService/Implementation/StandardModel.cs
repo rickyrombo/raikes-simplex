@@ -48,7 +48,7 @@ namespace RaikesSimplexService.Implementation
             var slackCount = model.Constraints.Count(s => s.Relationship == Relationship.LessThanOrEquals || s.Relationship == Relationship.GreaterThanOrEquals);
 
             var standardModel = new StandardModel(
-                model.Constraints.Count(), 
+                model.Constraints.Count(),
                 model.Constraints.First().Coefficients.Length,
                 slackCount,
                 artificialCount
@@ -59,7 +59,7 @@ namespace RaikesSimplexService.Implementation
             var sVar = 0; //Keeps track of where to put the next slack variable
             var aVar = 0; //Keeps track of where to put the next artificial variable
             var i = 0;
-            
+
             foreach (var constraint in model.Constraints)
             {
                 var addedVariables = new double[slackCount + artificialCount];
@@ -80,19 +80,21 @@ namespace RaikesSimplexService.Implementation
                 coeffs.AddRange(addedVariables);
                 standardModel.LHS.SetRow(i++, coeffs.ToArray<double>());
             }
-            
+
             var goalCoeffs = model.Goal.Coefficients.ToArray<double>();
             Array.Resize<double>(ref goalCoeffs, goalCoeffs.Length + slackCount + artificialCount);
             if (model.GoalKind == GoalKind.Maximize)
             {
                 standardModel.ObjectiveRow.SetRow(0, goalCoeffs.Select(s => 0 - s).ToArray<double>());
-            } else {
+            }
+            else
+            {
                 standardModel.ObjectiveRow.SetRow(0, goalCoeffs);
             }
             standardModel.RHS.SetValues(model.Constraints.Select(c => c.Value).ToArray<double>());
             return standardModel;
         }
-      
+
         /// <summary>
         /// Returns the string representation of the model
         /// </summary>
@@ -125,9 +127,9 @@ namespace RaikesSimplexService.Implementation
             {
                 return string.Format("Constraints:\n{0}\nObjective: {2}\n{1} \t= Z",
                     string.Join("\n", OriginalModel.Constraints.Select(
-                        r => string.Format("{0} \t{1} {2}", 
-                                _stringExpression(r.Coefficients, true), 
-                                _getRelationshipSymbol(r.Relationship), 
+                        r => string.Format("{0} \t{1} {2}",
+                                _stringExpression(r.Coefficients, true),
+                                _getRelationshipSymbol(r.Relationship),
                                 r.Value
                             )
                     )),
@@ -183,7 +185,7 @@ namespace RaikesSimplexService.Implementation
         {
             var i = 0;
             var expression = string.Join("\t+ ",
-                terms.Take(this.DecisionVariables).Select(s => 
+                terms.Take(this.DecisionVariables).Select(s =>
                     string.Format("{0} X{1}", s, ++i)
                 ));
             if (SlackVariables > 0 && !onlyShowDecisionVariables)

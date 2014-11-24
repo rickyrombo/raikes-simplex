@@ -4,11 +4,12 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using RaikesSimplexService.DataModel;
+using UnitTests.Helpers;
 
 namespace UnitTests
 {
-    
-    
+
+
     /// <summary>
     ///This is a test class for SolverTest and is intended
     ///to contain all SolverTest Unit Tests
@@ -17,7 +18,7 @@ namespace UnitTests
     public class SolverTest
     {
         private TestContext testContextInstance;
-        private Model testModel, testModel2;
+        private Model simpleModel;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -55,55 +56,7 @@ namespace UnitTests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            testModel = new Model
-            {
-                Constraints = new List<LinearConstraint>
-                { 
-                    new LinearConstraint{
-                        Coefficients = new double[]{1, 3, 4},
-                        Relationship = Relationship.LessThanOrEquals,
-                        Value = 10,
-                    },
-                    new LinearConstraint{
-                        Coefficients = new double[]{4, 3, 2},
-                        Relationship = Relationship.GreaterThanOrEquals,
-                        Value = 50,
-                    }
-                },
-                Goal = new Goal
-                {
-                    Coefficients = new double[] { 2, 6, 4 },
-                    ConstantTerm = 20
-                },
-                GoalKind = GoalKind.Minimize,
-            };
-            testModel2 = new Model
-            {
-                Constraints = new List<LinearConstraint>
-                {
-                    new LinearConstraint {
-                        Coefficients = new double[]{10, 5},
-                        Relationship = Relationship.LessThanOrEquals,
-                        Value = 50
-                    },
-                    new LinearConstraint {
-                        Coefficients = new double[]{6, 6},
-                        Relationship = Relationship.LessThanOrEquals,
-                        Value = 36
-                    },
-                    new LinearConstraint {
-                        Coefficients = new double[]{4.5, 18},
-                        Relationship = Relationship.LessThanOrEquals,
-                        Value = 81
-                    }
-                },
-                Goal = new Goal
-                {
-                    Coefficients = new double[] { 9, 7 },
-                    ConstantTerm = 0
-                },
-                GoalKind = GoalKind.Maximize
-            };
+            simpleModel = ModelGenerator.getSimpleModel();
         }
         //
         //Use TestCleanup to run code after each test has run
@@ -114,41 +67,17 @@ namespace UnitTests
         //
         #endregion
 
-
-        [TestMethod()]
-        public void PrintOriginalTest()
-        {
-            var model = StandardModel.FromModel(testModel);
-            Console.WriteLine(model.ToString(StandardModel.OutputFormat.Original));
-        }
-
-        [TestMethod()]
-        public void PrintTest()
-        {
-            var model = StandardModel.FromModel(testModel);
-            Console.WriteLine(model.ToString(StandardModel.OutputFormat.Expression));
-        }
-
-        [TestMethod()]
-        public void StandardizeTest()
-        {
-            var model = StandardModel.FromModel(testModel);
-            Console.WriteLine(model.ToString());
-        }
-
-        [TestMethod()]
-        public void MatrixifyTest()
-        {
-            var model = StandardModel.FromModel(testModel);
-            Console.WriteLine(model.ToString(StandardModel.OutputFormat.Matrix));
-        }
-
         [TestMethod()]
         public void SolveExampleProblem()
         {
             var solver = new Solver();
-            var actual = solver.Solve(testModel2);
-            var expected = new Solution { AlternateSolutionsExist = false, OptimalValue = 50, Decisions = new double[] { 4, 2 } };
+            var actual = solver.Solve(simpleModel);
+            var expected = new Solution
+            {
+                AlternateSolutionsExist = true,
+                OptimalValue = 20,
+                Decisions = new double[] { 0, 3.333333333333333, 0 }
+            };
             CollectionAssert.AreEqual(expected.Decisions, actual.Decisions);
             Assert.AreEqual(expected.Quality, actual.Quality);
             Assert.AreEqual(expected.AlternateSolutionsExist, actual.AlternateSolutionsExist);
@@ -161,7 +90,7 @@ namespace UnitTests
         public void ExampleSolveTest()
         {
             #region Arrange
-            var target = new Solver();            
+            var target = new Solver();
 
             var lc1 = new LinearConstraint()
             {
@@ -191,13 +120,13 @@ namespace UnitTests
                 Value = 5
             };
 
-            var constraints = new List<LinearConstraint>() {lc1, lc2, lc3, lc4};
+            var constraints = new List<LinearConstraint>() { lc1, lc2, lc3, lc4 };
 
-            var goal = new Goal() 
-            { 
+            var goal = new Goal()
+            {
                 Coefficients = new double[2] { 0.2, 0.3 },
                 ConstantTerm = 0
-            };           
+            };
 
             var model = new Model()
             {
@@ -205,7 +134,7 @@ namespace UnitTests
                 Goal = goal,
                 GoalKind = GoalKind.Minimize
             };
-            
+
             var expected = new Solution()
             {
                 Decisions = new double[2] { 3, 0 },
@@ -223,5 +152,8 @@ namespace UnitTests
             Assert.AreEqual(expected.Quality, actual.Quality);
             Assert.AreEqual(expected.AlternateSolutionsExist, actual.AlternateSolutionsExist);
         }
+
+
     }
 }
+
