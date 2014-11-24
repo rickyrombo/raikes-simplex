@@ -7,8 +7,8 @@ using RaikesSimplexService.DataModel;
 
 namespace UnitTests
 {
-    
-    
+
+
     /// <summary>
     ///This is a test class for SolverTest and is intended
     ///to contain all SolverTest Unit Tests
@@ -114,35 +114,6 @@ namespace UnitTests
         //
         #endregion
 
-
-        [TestMethod()]
-        public void PrintOriginalTest()
-        {
-            var model = StandardModel.FromModel(testModel);
-            Console.WriteLine(model.ToString(StandardModel.OutputFormat.Original));
-        }
-
-        [TestMethod()]
-        public void PrintTest()
-        {
-            var model = StandardModel.FromModel(testModel);
-            Console.WriteLine(model.ToString(StandardModel.OutputFormat.Expression));
-        }
-
-        [TestMethod()]
-        public void StandardizeTest()
-        {
-            var model = StandardModel.FromModel(testModel);
-            Console.WriteLine(model.ToString());
-        }
-
-        [TestMethod()]
-        public void MatrixifyTest()
-        {
-            var model = StandardModel.FromModel(testModel);
-            Console.WriteLine(model.ToString(StandardModel.OutputFormat.Matrix));
-        }
-
         [TestMethod()]
         public void SolveExampleProblem()
         {
@@ -161,7 +132,7 @@ namespace UnitTests
         public void ExampleSolveTest()
         {
             #region Arrange
-            var target = new Solver();            
+            var target = new Solver();
 
             var lc1 = new LinearConstraint()
             {
@@ -191,13 +162,13 @@ namespace UnitTests
                 Value = 5
             };
 
-            var constraints = new List<LinearConstraint>() {lc1, lc2, lc3, lc4};
+            var constraints = new List<LinearConstraint>() { lc1, lc2, lc3, lc4 };
 
-            var goal = new Goal() 
-            { 
+            var goal = new Goal()
+            {
                 Coefficients = new double[2] { 0.2, 0.3 },
                 ConstantTerm = 0
-            };           
+            };
 
             var model = new Model()
             {
@@ -205,7 +176,7 @@ namespace UnitTests
                 Goal = goal,
                 GoalKind = GoalKind.Minimize
             };
-            
+
             var expected = new Solution()
             {
                 Decisions = new double[2] { 3, 0 },
