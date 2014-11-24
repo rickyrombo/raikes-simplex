@@ -71,7 +71,7 @@ namespace UnitTests
         [TestMethod()]
         public void SimpleMatrixifyTest()
         {
-            String expectedMatrixification = "LHS:\nDenseMatrix 2x3-Double\r\n1  3  4\r\n4  3  2\r\n\n\nRHS:\nDenseVector 2-Double\r\n10\r\n50\r\n\n\nObjective Row:\nDenseMatrix 1x4-Double\r\n2  6  4  20\r\n";
+            String expectedMatrixification = "X0\tX1\tX2\tS0\tS1\t|\tRHS\r\n1\t3\t4\t1\t0\t|\t10\r\n4\t3\t2\t0\t1\t|\t50\r\nObjective\r\n-2\t-6\t-4\t0\t0\r\n";
             MatrixifyTest(simpleModel, expectedMatrixification);
         }
 
