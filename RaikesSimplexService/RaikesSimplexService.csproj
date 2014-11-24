@@ -57,8 +57,7 @@
     <Compile Include="DataModel\Model.cs" />
     <Compile Include="DataModel\Solution.cs" />
     <Compile Include="DataModel\SolutionQuality.cs" />
-    <Compile Include="Implementation\Extensions\DataModelMatrixify.cs" />
-    <Compile Include="Implementation\Extensions\DataModelStringify.cs" />
+    <Compile Include="Implementation\StandardModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Implementation\Solver.cs" />
   </ItemGroup>
@@ -67,6 +66,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Implementation\Extensions\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

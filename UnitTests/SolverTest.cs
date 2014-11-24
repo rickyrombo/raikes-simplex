@@ -4,7 +4,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using RaikesSimplexService.DataModel;
-using RaikesSimplexService.Implementation.Extensions;
 
 namespace UnitTests
 {
@@ -117,26 +116,31 @@ namespace UnitTests
 
 
         [TestMethod()]
+        public void PrintOriginalTest()
+        {
+            var model = StandardModel.FromModel(testModel);
+            Console.WriteLine(model.ToString(StandardModel.OutputFormat.Original));
+        }
+
+        [TestMethod()]
         public void PrintTest()
         {
-            Console.WriteLine(testModel.Stringify());
+            var model = StandardModel.FromModel(testModel);
+            Console.WriteLine(model.ToString(StandardModel.OutputFormat.Expression));
         }
 
         [TestMethod()]
         public void StandardizeTest()
         {
-            var model = Solver.Standardize(testModel);
-            var actualCount = testModel.Constraints.First().Coefficients.Count();
-            var slackCount = testModel.Constraints.Count(s => s.Relationship != Relationship.Equals);
-            Console.WriteLine(model.Stringify(actualCount, slackCount));
+            var model = StandardModel.FromModel(testModel);
+            Console.WriteLine(model.ToString());
         }
 
         [TestMethod()]
         public void MatrixifyTest()
         {
-            var solver = new Solver();
-            var model = Solver.Standardize(testModel);
-            Console.WriteLine(model.Matrixify());
+            var model = StandardModel.FromModel(testModel);
+            Console.WriteLine(model.ToString(StandardModel.OutputFormat.Matrix));
         }
 
         [TestMethod()]
