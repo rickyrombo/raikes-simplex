@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using RaikesSimplexService.DataModel;
+using UnitTests.Helpers;
 
 namespace UnitTests
 {
@@ -18,6 +19,7 @@ namespace UnitTests
     {
         private TestContext testContextInstance;
         private Model testModel, testModel2;
+        private StandardModel simpleModel;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -194,5 +196,8 @@ namespace UnitTests
             Assert.AreEqual(expected.Quality, actual.Quality);
             Assert.AreEqual(expected.AlternateSolutionsExist, actual.AlternateSolutionsExist);
         }
+
+
     }
 }
+

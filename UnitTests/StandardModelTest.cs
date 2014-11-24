@@ -4,7 +4,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using RaikesSimplexService.DataModel;
-using RaikesSimplexService.Implementation.Extensions;
 using UnitTests.Helpers;
 
 namespace UnitTests
@@ -12,11 +11,11 @@ namespace UnitTests
 
 
     /// <summary>
-    ///This is a test class for DataModelMatrixify and is intended
-    ///to contain all DataModelMatrixify Unit Tests
+    ///This is a test class for SolverTest and is intended
+    ///to contain all SolverTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class DataModelMatrixifyTest
+    public class StandardModelTest
     {
         private TestContext testContextInstance;
         private StandardModel simpleModel;
@@ -69,16 +68,42 @@ namespace UnitTests
         #endregion
 
         [TestMethod()]
-        public void SimpleMatrixifyTest()
+        public void SimpleToStringMatrixTest()
         {
             String expectedMatrixification = "X0\tX1\tX2\tS0\tS1\t|\tRHS\r\n1\t3\t4\t1\t0\t|\t10\r\n4\t3\t2\t0\t1\t|\t50\r\nObjective\r\n-2\t-6\t-4\t0\t0\r\n";
-            MatrixifyTest(simpleModel, expectedMatrixification);
+            ToStringMatrixTest(simpleModel, expectedMatrixification);
         }
 
-        public void MatrixifyTest(StandardModel modelToMatrixify, String expectedMatrixification)
+        public void ToStringMatrixTest(StandardModel modelToMatrixify, String expectedMatrixification)
         {
             String actualMatrixification = simpleModel.ToString(StandardModel.OutputFormat.Matrix);
             Assert.AreEqual(expectedMatrixification, actualMatrixification);
+        }
+
+        [TestMethod()]
+        public void SimpleToStringOriginalTest()
+        {
+            String expectedStringification = "Constraints:\n1 X1\t+ 3 X2\t+ 4 X3 \t<= 10\n4 X1\t+ 3 X2\t+ 2 X3 \t<= 50\nObjective: Maximize\n-2 X1\t+ -6 X2\t+ -4 X3 \t= Z";
+            ToStringOriginalTest(simpleModel, expectedStringification);
+        }
+
+        public void ToStringOriginalTest(StandardModel modelToStringify, String expectedStringification)
+        {
+            String actualStringification = modelToStringify.ToString(StandardModel.OutputFormat.Original);
+            Assert.AreEqual(expectedStringification, actualStringification);
+        }
+
+        [TestMethod()]
+        public void SimpleToStringExpressionTest()
+        {
+            String expectedStringification = "Constraints:\n1 X1\t+ 3 X2\t+ 4 X3\t+ 1 S1\t+ 0 S2\t= 10\n4 X1\t+ 3 X2\t+ 2 X3\t+ 0 S1\t+ 1 S2\t= 50\nObjective: Maximize\nZ\t+ -2 X1\t+ -6 X2\t+ -4 X3\t+ 0 S1\t+ 0 S2 \t= 0";
+            ToStringExpressionTest(simpleModel, expectedStringification);
+        }
+
+        public void ToStringExpressionTest(StandardModel modelToStringify, String expectedStringification)
+        {
+            String actualStringification = modelToStringify.ToString(StandardModel.OutputFormat.Expression);
+            Assert.AreEqual(expectedStringification, actualStringification);
         }
     }
 }
