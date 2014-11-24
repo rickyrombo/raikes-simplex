@@ -19,7 +19,7 @@ namespace UnitTests
     public class DataModelMatrixifyTest
     {
         private TestContext testContextInstance;
-        private Model simpleModel;
+        private StandardModel simpleModel;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -57,7 +57,7 @@ namespace UnitTests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            simpleModel = ModelGenerator.getSimpleModel();
+            simpleModel = StandardModelGenerator.getSimpleModel();
         }
         //
         //Use TestCleanup to run code after each test has run
@@ -75,11 +75,10 @@ namespace UnitTests
             MatrixifyTest(simpleModel, expectedMatrixification);
         }
 
-        public void MatrixifyTest(Model modelToMatrixify, String expectedMatrixification)
+        public void MatrixifyTest(StandardModel modelToMatrixify, String expectedMatrixification)
         {
-            String actualMatrixification = simpleModel.Matrixify();
+            String actualMatrixification = simpleModel.ToString(StandardModel.OutputFormat.Matrix);
             Assert.AreEqual(expectedMatrixification, actualMatrixification);
-
         }
     }
 }
