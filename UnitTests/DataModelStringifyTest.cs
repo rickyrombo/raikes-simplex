@@ -19,7 +19,7 @@ namespace UnitTests
     public class DataModelStringify
     {
         private TestContext testContextInstance;
-        private Model simpleModel;
+        private StandardModel simpleModel;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -57,7 +57,7 @@ namespace UnitTests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            simpleModel = ModelGenerator.getSimpleModel();
+            simpleModel = StandardModelGenerator.getSimpleModel();
         }
         //
         //Use TestCleanup to run code after each test has run
@@ -72,13 +72,13 @@ namespace UnitTests
         [TestMethod()]
         public void SimpleStringifyTest()
         {
-            String expectedStringification = "Constraints:\n1x1 + 3x2 + 4x3 <= 10\n4x1 + 3x2 + 2x3 <= 50, \nGoal:\nMaximize 2x1 + 6x2 + 4x3 = 20";
+            String expectedStringification = "Constraints:\n1x1 + 3x2 + 4x3 <= 10\n4x1 + 3x2 + 2x3 <= 50, \nObjective: Maximize 2x1 + 6x2 + 4x3 = 20";
             StringifyTest(simpleModel, expectedStringification);
         }
 
-        public void StringifyTest(Model modelToStringify, String expectedStringification)
+        public void StringifyTest(StandardModel modelToStringify, String expectedStringification)
         {
-            String actualStringification = modelToStringify.Stringify();
+            String actualStringification = modelToStringify.ToString(StandardModel.OutputFormat.Original);
             Assert.AreEqual(expectedStringification, actualStringification);
         }
 
