@@ -70,15 +70,28 @@ namespace UnitTests
 
 
         [TestMethod()]
-        public void SimpleStringifyTest()
+        public void SimpleToStringOriginalTest()
         {
-            String expectedStringification = "Constraints:\n1x1 + 3x2 + 4x3 <= 10\n4x1 + 3x2 + 2x3 <= 50, \nObjective: Maximize 2x1 + 6x2 + 4x3 = 20";
-            StringifyTest(simpleModel, expectedStringification);
+            String expectedStringification = "Constraints:\n1 X1\t+ 3 X2\t+ 4 X3 \t<= 10\n4 X1\t+ 3 X2\t+ 2 X3 \t<= 50\nObjective: Maximize\n-2 X1\t+ -6 X2\t+ -4 X3 \t= Z";
+            ToStringOriginalTest(simpleModel, expectedStringification);
         }
 
-        public void StringifyTest(StandardModel modelToStringify, String expectedStringification)
+        public void ToStringOriginalTest(StandardModel modelToStringify, String expectedStringification)
         {
             String actualStringification = modelToStringify.ToString(StandardModel.OutputFormat.Original);
+            Assert.AreEqual(expectedStringification, actualStringification);
+        }
+
+        [TestMethod()]
+        public void SimpleToStringExpressionTest()
+        {
+            String expectedStringification = "Constraints:\n1 X1\t+ 3 X2\t+ 4 X3\t+ 1 S1\t+ 0 S2\t= 10\n4 X1\t+ 3 X2\t+ 2 X3\t+ 0 S1\t+ 1 S2\t= 50\nObjective: Maximize\nZ\t+ -2 X1\t+ -6 X2\t+ -4 X3\t+ 0 S1\t+ 0 S2 \t= 0";
+            ToStringExpressionTest(simpleModel, expectedStringification);
+        }
+
+        public void ToStringExpressionTest(StandardModel modelToStringify, String expectedStringification)
+        {
+            String actualStringification = modelToStringify.ToString(StandardModel.OutputFormat.Expression);
             Assert.AreEqual(expectedStringification, actualStringification);
         }
 
