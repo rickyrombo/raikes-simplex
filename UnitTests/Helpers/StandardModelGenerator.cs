@@ -18,5 +18,10 @@ namespace UnitTests.Helpers
         {
             return StandardModel.FromModel(ModelGenerator.GetImpossibleModel());
         }
+
+        public static StandardModel GetUnboundedStandardModel()
+        {
+            return StandardModel.FromModel(ModelGenerator.GetUnboundedModel());
+        }
     }
 }
