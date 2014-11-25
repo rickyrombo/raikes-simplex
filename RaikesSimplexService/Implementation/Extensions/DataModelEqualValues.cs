@@ -37,5 +37,6 @@ namespace RaikesSimplexService.Implementation.Extensions
             bool sameGoalKind = self.GoalKind == other.GoalKind;
             return sameGoal && sameConstraints && sameGoalKind;
         }
+
     }
 }
