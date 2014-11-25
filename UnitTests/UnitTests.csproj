@@ -51,7 +51,6 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\DataModelEqualValues.cs" />
     <Compile Include="Helpers\StandardModelGenerator.cs" />
     <Compile Include="Helpers\ModelGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
