@@ -35,5 +35,33 @@ namespace UnitTests.Helpers
                 GoalKind = GoalKind.Maximize
             };
         }
+
+        public static Model getImpossibleModel()
+        {
+            return new Model
+            {
+                Constraints = new List<LinearConstraint>
+                {
+                    new LinearConstraint
+                    {
+                        Coefficients = new double[]{1},
+                        Relationship = Relationship.LessThanOrEquals,
+                        Value = 10,
+                    },
+                    new LinearConstraint
+                    {
+                        Coefficients = new double[]{1},
+                        Relationship = Relationship.GreaterThanOrEquals,
+                        Value = 20,
+                    }
+                },
+                Goal = new Goal
+                {
+                    Coefficients = new double[] { 3 },
+                    ConstantTerm = 0
+                },
+                GoalKind = GoalKind.Maximize
+            };
+        }
     }
 }
