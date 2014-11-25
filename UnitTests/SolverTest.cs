@@ -1,4 +1,5 @@
 ﻿using RaikesSimplexService.Implementation;
+using RaikesSimplexService.Implementation.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace UnitTests
     public class SolverTest
     {
         private TestContext testContextInstance;
-        private Model simpleModel;
+        private Model simpleModel, impossibleModel, unboundedModel;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -56,7 +57,9 @@ namespace UnitTests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            simpleModel = ModelGenerator.getSimpleModel();
+            simpleModel = ModelGenerator.GetSimpleModel();
+            impossibleModel = ModelGenerator.GetImpossibleModel();
+            unboundedModel = ModelGenerator.GetUnboundedModel();
         }
         //
         //Use TestCleanup to run code after each test has run
@@ -68,91 +71,37 @@ namespace UnitTests
         #endregion
 
         [TestMethod()]
-        public void SolveExampleProblem()
+        public void SolveSimpleModelTest()
         {
-            var solver = new Solver();
-            var actual = solver.Solve(simpleModel);
-            var expected = new Solution
-            {
-                AlternateSolutionsExist = true,
-                OptimalValue = 20,
-                Decisions = new double[] { 0, 3.333333333333333, 0 }
-            };
-            CollectionAssert.AreEqual(expected.Decisions, actual.Decisions);
-            Assert.AreEqual(expected.Quality, actual.Quality);
-            Assert.AreEqual(expected.AlternateSolutionsExist, actual.AlternateSolutionsExist);
+            Solution expectedSolution = SolutionGenerator.GetSimpleSolution();
+            SolveModelTest(simpleModel, expectedSolution);
         }
 
-        /// <summary>
-        ///A test for Solve
-        ///</summary>
         [TestMethod()]
-        public void ExampleSolveTest()
+        public void SolveImpossibleModelTest()
         {
-            #region Arrange
-            var target = new Solver();
-
-            var lc1 = new LinearConstraint()
-            {
-                Coefficients = new double[2] { 8, 12 },
-                Relationship = Relationship.GreaterThanOrEquals,
-                Value = 24
-            };
-
-            var lc2 = new LinearConstraint()
-            {
-                Coefficients = new double[2] { 12, 12 },
-                Relationship = Relationship.GreaterThanOrEquals,
-                Value = 36
-            };
-
-            var lc3 = new LinearConstraint()
-            {
-                Coefficients = new double[2] { 2, 1 },
-                Relationship = Relationship.GreaterThanOrEquals,
-                Value = 4
-            };
-
-            var lc4 = new LinearConstraint()
-            {
-                Coefficients = new double[2] { 1, 1 },
-                Relationship = Relationship.LessThanOrEquals,
-                Value = 5
-            };
-
-            var constraints = new List<LinearConstraint>() { lc1, lc2, lc3, lc4 };
-
-            var goal = new Goal()
-            {
-                Coefficients = new double[2] { 0.2, 0.3 },
-                ConstantTerm = 0
-            };
-
-            var model = new Model()
-            {
-                Constraints = constraints,
-                Goal = goal,
-                GoalKind = GoalKind.Minimize
-            };
-
-            var expected = new Solution()
-            {
-                Decisions = new double[2] { 3, 0 },
-                Quality = SolutionQuality.Optimal,
-                AlternateSolutionsExist = false,
-                OptimalValue = 0.6
-            };
-            #endregion
-
-            //Act
-            var actual = target.Solve(model);
-
-            //Assert
-            CollectionAssert.AreEqual(expected.Decisions, actual.Decisions);
-            Assert.AreEqual(expected.Quality, actual.Quality);
-            Assert.AreEqual(expected.AlternateSolutionsExist, actual.AlternateSolutionsExist);
+            SolveModelTest(impossibleModel, SolutionQuality.Infeasible);
         }
 
+        [TestMethod()]
+        public void SolveUnboundedModelTest()
+        {
+            SolveModelTest(unboundedModel, SolutionQuality.Unbounded);
+        }
+
+        public void SolveModelTest(Model m, SolutionQuality expectedQuality)
+        {
+            Solver solver = new Solver();
+            Solution actualSolution = solver.Solve(m);
+            Assert.AreEqual(expectedQuality, actualSolution.Quality);
+        }
+
+        public void SolveModelTest(Model m, Solution expectedSolution)
+        {
+            Solver solver = new Solver();
+            Solution actualSolution = solver.Solve(m);
+            Assert.IsTrue(expectedSolution.EqualValues(actualSolution));
+        }
 
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using RaikesSimplexService.Implementation.Extensions;
 
 namespace RaikesSimplexService.Implementation
 {
@@ -140,6 +141,16 @@ namespace RaikesSimplexService.Implementation
             return _getMatrixForm();
         }
 
+        public bool Equals(StandardModel other)
+        {
+            bool sameObjRow = this.ObjectiveRow.Equals(other.ObjectiveRow);
+            bool sameLHS = this.LHS.Equals(other.LHS);
+            bool sameRHS = this.RHS.Equals(other.RHS);
+            bool sameSlack = this.SlackVariables == other.SlackVariables;
+            bool sameModel = this.OriginalModel.EqualValues(other.OriginalModel);
+            return sameObjRow && sameLHS && sameRHS && sameSlack && sameModel;
+        }
+
         #region private methods
         private string _getRelationshipSymbol(Relationship r)
         {
@@ -209,5 +220,6 @@ namespace RaikesSimplexService.Implementation
             return expression;
         }
         #endregion
+
     }
 }

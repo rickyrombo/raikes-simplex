@@ -10,7 +10,7 @@ namespace UnitTests.Helpers
     public static class ModelGenerator
     {
 
-        public static Model getSimpleModel()
+        public static Model GetSimpleModel()
         {
             return new Model
             {
@@ -31,6 +31,57 @@ namespace UnitTests.Helpers
                 {
                     Coefficients = new double[] { 2, 6, 4 },
                     ConstantTerm = 20
+                },
+                GoalKind = GoalKind.Maximize
+            };
+        }
+
+        public static Model GetImpossibleModel()
+        {
+            return new Model
+            {
+                Constraints = new List<LinearConstraint>
+                {
+                    new LinearConstraint
+                    {
+                        Coefficients = new double[]{1},
+                        Relationship = Relationship.LessThanOrEquals,
+                        Value = 10,
+                    },
+                    new LinearConstraint
+                    {
+                        Coefficients = new double[]{1},
+                        Relationship = Relationship.GreaterThanOrEquals,
+                        Value = 20,
+                    }
+                },
+                Goal = new Goal
+                {
+                    Coefficients = new double[] { 3 },
+                    ConstantTerm = 0
+                },
+                GoalKind = GoalKind.Maximize
+            };
+        }
+
+        public static Model GetUnboundedModel()
+        {
+            return new Model
+            {
+                Constraints = new List<LinearConstraint>
+                {
+                    new LinearConstraint
+                    {
+                        Coefficients = new double[]{2, 8},
+                        Relationship = Relationship.GreaterThanOrEquals,
+                        Value = 35.1,
+                    }
+                    
+                },
+                Goal = new Goal
+                {
+                    Coefficients = new double[] { 9, 9 },
+                    ConstantTerm = 0
                 },
                 GoalKind = GoalKind.Maximize
             };

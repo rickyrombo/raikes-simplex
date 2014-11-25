@@ -37,5 +37,14 @@ namespace RaikesSimplexService.Implementation.Extensions
             bool sameGoalKind = self.GoalKind == other.GoalKind;
             return sameGoal && sameConstraints && sameGoalKind;
         }
+
+        public static bool EqualValues(this Solution self, Solution other)
+        {
+            bool sameDecisions = self.Decisions.SequenceEqual(other.Decisions);
+            bool sameQuality = self.Quality == other.Quality;
+            bool sameAltSols = self.AlternateSolutionsExist == other.AlternateSolutionsExist;
+            return sameDecisions && sameQuality && sameAltSols;
+        }
+
     }
 }
