@@ -19,7 +19,7 @@ namespace UnitTests
     public class SolverTest
     {
         private TestContext testContextInstance;
-        private Model simpleModel;
+        private Model simpleModel, impossibleModel;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -58,6 +58,7 @@ namespace UnitTests
         public void MyTestInitialize()
         {
             simpleModel = ModelGenerator.getSimpleModel();
+            impossibleModel = ModelGenerator.getImpossibleModel();
         }
         //
         //Use TestCleanup to run code after each test has run
@@ -69,17 +70,35 @@ namespace UnitTests
         #endregion
 
         [TestMethod()]
-        public void SolveSimpleModel()
+        public void SolveSimpleModelTest()
         {
-            var solver = new Solver();
-            var actual = solver.Solve(simpleModel);
-            var expected = new Solution
+            Solution expectedSolution = new Solution
             {
                 AlternateSolutionsExist = true,
                 OptimalValue = 20,
                 Decisions = new double[] { 0, 3.333333333333333, 0 }
             };
-            Assert.IsTrue(expected.EqualValues(actual));
+            SolveModelTest(simpleModel, expectedSolution);
+        }
+
+        [TestMethod()]
+        public void SolveImpossibleModelTest()
+        {
+            SolveModelTest(impossibleModel, SolutionQuality.Infeasible);
+        }
+
+        public void SolveModelTest(Model m, SolutionQuality expectedQuality)
+        {
+            Solver solver = new Solver();
+            Solution actualSolution = solver.Solve(m);
+            Assert.AreEqual(expectedQuality, actualSolution.Quality);
+        }
+
+        public void SolveModelTest(Model m, Solution expectedSolution)
+        {
+            Solver solver = new Solver();
+            Solution actualSolution = solver.Solve(m);
+            Assert.IsTrue(expectedSolution.Equals(actualSolution));
         }
 
     }
