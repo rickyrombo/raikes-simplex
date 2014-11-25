@@ -1,4 +1,5 @@
 ﻿using RaikesSimplexService.Implementation;
+using RaikesSimplexService.Implementation.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -78,9 +79,7 @@ namespace UnitTests
                 OptimalValue = 20,
                 Decisions = new double[] { 0, 3.333333333333333, 0 }
             };
-            CollectionAssert.AreEqual(expected.Decisions, actual.Decisions);
-            Assert.AreEqual(expected.Quality, actual.Quality);
-            Assert.AreEqual(expected.AlternateSolutionsExist, actual.AlternateSolutionsExist);
+            Assert.IsTrue(expected.EqualValues(actual));
         }
 
     }
