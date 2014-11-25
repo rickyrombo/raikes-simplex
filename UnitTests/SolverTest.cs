@@ -68,7 +68,7 @@ namespace UnitTests
         #endregion
 
         [TestMethod()]
-        public void SolveExampleProblem()
+        public void SolveSimpleModel()
         {
             var solver = new Solver();
             var actual = solver.Solve(simpleModel);
