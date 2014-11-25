@@ -9,7 +9,7 @@ namespace UnitTests.Helpers
 {
     public static class SolutionGenerator
     {
-        public static Solution getSimpleSolution()
+        public static Solution GetSimpleSolution()
         {
             return new Solution
             {

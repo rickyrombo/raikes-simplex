@@ -57,8 +57,8 @@ namespace UnitTests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            simpleModel = ModelGenerator.getSimpleModel();
-            impossibleModel = ModelGenerator.getImpossibleModel();
+            simpleModel = ModelGenerator.GetSimpleModel();
+            impossibleModel = ModelGenerator.GetImpossibleModel();
         }
         //
         //Use TestCleanup to run code after each test has run
@@ -72,7 +72,7 @@ namespace UnitTests
         [TestMethod()]
         public void SolveSimpleModelTest()
         {
-            Solution expectedSolution = SolutionGenerator.getSimpleSolution();
+            Solution expectedSolution = SolutionGenerator.GetSimpleSolution();
             SolveModelTest(simpleModel, expectedSolution);
         }
 

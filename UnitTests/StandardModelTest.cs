@@ -57,8 +57,8 @@ namespace UnitTests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            simpleStandardModel = StandardModelGenerator.getSimpleStandardModel();
-            simpleModel = ModelGenerator.getSimpleModel();
+            simpleStandardModel = StandardModelGenerator.GetSimpleStandardModel();
+            simpleModel = ModelGenerator.GetSimpleModel();
         }
         //
         //Use TestCleanup to run code after each test has run
@@ -72,7 +72,7 @@ namespace UnitTests
         [TestMethod()]
         public void SimpleFromModelTest()
         {
-            StandardModel expectedStandardModel = StandardModelGenerator.getSimpleStandardModel();
+            StandardModel expectedStandardModel = StandardModelGenerator.GetSimpleStandardModel();
             ToStringMatrixTest(simpleModel, expectedStandardModel);
         }
 
