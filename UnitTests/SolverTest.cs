@@ -72,12 +72,7 @@ namespace UnitTests
         [TestMethod()]
         public void SolveSimpleModelTest()
         {
-            Solution expectedSolution = new Solution
-            {
-                AlternateSolutionsExist = true,
-                OptimalValue = 20,
-                Decisions = new double[] { 0, 3.333333333333333, 0 }
-            };
+            Solution expectedSolution = SolutionGenerator.getSimpleSolution();
             SolveModelTest(simpleModel, expectedSolution);
         }
 
@@ -98,7 +93,7 @@ namespace UnitTests
         {
             Solver solver = new Solver();
             Solution actualSolution = solver.Solve(m);
-            Assert.IsTrue(expectedSolution.Equals(actualSolution));
+            Assert.IsTrue(expectedSolution.EqualValues(actualSolution));
         }
 
     }

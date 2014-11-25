@@ -51,6 +51,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\SolutionGenerator.cs" />
     <Compile Include="Helpers\StandardModelGenerator.cs" />
     <Compile Include="Helpers\ModelGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
