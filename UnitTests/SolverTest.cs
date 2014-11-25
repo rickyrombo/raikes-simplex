@@ -19,7 +19,7 @@ namespace UnitTests
     public class SolverTest
     {
         private TestContext testContextInstance;
-        private Model simpleModel, impossibleModel;
+        private Model simpleModel, impossibleModel, unboundedModel;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -59,6 +59,7 @@ namespace UnitTests
         {
             simpleModel = ModelGenerator.GetSimpleModel();
             impossibleModel = ModelGenerator.GetImpossibleModel();
+            unboundedModel = ModelGenerator.GetUnboundedModel();
         }
         //
         //Use TestCleanup to run code after each test has run
@@ -80,6 +81,12 @@ namespace UnitTests
         public void SolveImpossibleModelTest()
         {
             SolveModelTest(impossibleModel, SolutionQuality.Infeasible);
+        }
+
+        [TestMethod()]
+        public void SolveUnboundedModelTest()
+        {
+            SolveModelTest(unboundedModel, SolutionQuality.Unbounded);
         }
 
         public void SolveModelTest(Model m, SolutionQuality expectedQuality)
