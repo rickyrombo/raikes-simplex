@@ -13,5 +13,10 @@ namespace UnitTests.Helpers
         {
             return StandardModel.FromModel(ModelGenerator.getSimpleModel());
         }
+
+        public static StandardModel getImpossibleStandardModel()
+        {
+            return StandardModel.FromModel(ModelGenerator.getImpossibleModel());
+        }
     }
 }
