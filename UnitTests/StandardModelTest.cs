@@ -79,7 +79,7 @@ namespace UnitTests
         public void ToStringMatrixTest(Model modelToStandardize, StandardModel expectedStandardModel)
         {
             StandardModel actualStandardModel = StandardModel.FromModel(modelToStandardize);
-            Assert.AreEqual(expectedStandardModel, actualStandardModel);
+            Assert.IsTrue(expectedStandardModel.Equals(actualStandardModel));
         }
 
         [TestMethod()]
