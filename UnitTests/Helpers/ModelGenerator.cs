@@ -86,5 +86,39 @@ namespace UnitTests.Helpers
                 GoalKind = GoalKind.Maximize
             };
         }
+
+        public static Model GetTwoPhaseModel()
+        {
+            return new Model
+            {
+                Constraints = new List<LinearConstraint>
+                {
+                    new LinearConstraint
+                    {
+                        Coefficients = new double[]{1, 1},
+                        Relationship = Relationship.LessThanOrEquals,
+                        Value = 1
+                    },
+                    new LinearConstraint
+                    {
+                        Coefficients = new double[]{2, -1},
+                        Relationship = Relationship.GreaterThanOrEquals,
+                        Value = 1
+                    },
+                    new LinearConstraint
+                    {
+                        Coefficients = new double[]{0, 3},
+                        Relationship = Relationship.LessThanOrEquals,
+                        Value = 2
+                    }
+                },
+                Goal = new Goal
+                {
+                    Coefficients = new double[] {6, 3},
+                    ConstantTerm = 0
+                },
+                GoalKind = GoalKind.Maximize
+            };
+        }
     }
 }
