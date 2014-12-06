@@ -18,16 +18,16 @@ namespace RaikesSimplexService.Implementation
             Expression
         }
         public Model OriginalModel { get; private set; }
-        public Matrix<double> LHS { get; private set; }
-        public Vector<double> RHS { get; private set; }
-        public Matrix<double> ObjectiveRow { get; private set; }
+        public Matrix<double> LHS { get; set; }
+        public Vector<double> RHS { get; set; }
+        public Matrix<double> ObjectiveRow { get; set; }
 
         public int DecisionVariables { get; private set; }
         public int SlackVariables { get; private set; }
         public int ArtificialVariables { get; private set; }
         #endregion
 
-        private StandardModel(int constraintCount, int decisionCount, int slackCount, int artificialCount)
+        public StandardModel(int constraintCount, int decisionCount, int slackCount, int artificialCount, Model originalModel)
         {
             var totalVars = decisionCount + slackCount + artificialCount;
             this.LHS = Matrix<double>.Build.Dense(constraintCount, totalVars);
@@ -36,6 +36,7 @@ namespace RaikesSimplexService.Implementation
             this.DecisionVariables = decisionCount;
             this.SlackVariables = slackCount;
             this.ArtificialVariables = artificialCount;
+            this.OriginalModel = originalModel;
         }
 
         /// <summary>
@@ -53,10 +54,9 @@ namespace RaikesSimplexService.Implementation
                 model.Constraints.Count() + wombo,
                 model.Constraints.First().Coefficients.Length + wombo,
                 slackCount,
-                artificialCount
+                artificialCount,
+                model
             );
-
-            standardModel.OriginalModel = model;
 
             var sVar = 0; //Keeps track of where to put the next slack variable
             var aVar = 0; //Keeps track of where to put the next artificial variable

@@ -93,7 +93,7 @@ namespace UnitTests
         [TestMethod()]
         public void SolveTwoPhaseModelTest()
         {
-            SolveModelTest(twoPhaseModel, SolutionQuality.Optimal);
+            SolveModelTest(twoPhaseModel, SolutionGenerator.GetTwoPhaseSolution());
         }
         public void SolveModelTest(Model m, SolutionQuality expectedQuality)
         {
