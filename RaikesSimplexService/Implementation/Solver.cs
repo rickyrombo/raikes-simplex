@@ -69,6 +69,12 @@ namespace RaikesSimplexService.Implementation
                         phase2.ObjectiveRow = phase2.ObjectiveRow.RemoveColumn(0);
                         for (int i = 0; i < model.ArtificialVariables; i++)
                         {
+                            var artificialCol = phase2.LHS.Column(phase2.LHS.ColumnCount - 1).Enumerate();
+                            if (artificialCol.Count(s => s != 0) == 1 && artificialCol.Any(s => s == 1))
+                            {
+                                sol.Quality = SolutionQuality.Infeasible;
+                                return sol;
+                            }
                             phase2.LHS = phase2.LHS.RemoveColumn(phase2.LHS.ColumnCount - 1);
                             phase2.ObjectiveRow = phase2.ObjectiveRow.RemoveColumn(phase2.ObjectiveRow.ColumnCount - 1);
                         }
@@ -88,6 +94,11 @@ namespace RaikesSimplexService.Implementation
                 var ratios = xb.PointwiseDivide(divisor);
                 //Get the minimum ratio that's > 0 - that's our exiting basic variable
                 var exitingCol = ratios.EnumerateIndexed().Where(s => s.Item2 > 0).OrderBy(s => s.Item2).FirstOrDefault();
+                if (exitingCol == null)
+                {
+                    sol.Quality = SolutionQuality.Unbounded;
+                    break;
+                }
                 var newCol = nonbasicColumns.FirstOrDefault(s => s.Item1 == enteringCol.Item1);
                 basicColumns.RemoveAt(exitingCol.Item1);
                 int insertHere = 0;
