@@ -23,7 +23,7 @@ namespace RaikesSimplexService.Implementation
         public Solution SolveStandardModel(StandardModel model)
         {
             //Get initial basic columns
-            var basicColumns = model.LHS.EnumerateColumnsIndexed().Where(v => v.Item2.Count(s => s != 0) == 1 && v.Item2.Any(s => s == 1)).ToList();
+            var basicColumns = model.LHS.EnumerateColumnsIndexed().Where(v => v.Item2.Count(s => !NearlyZero(s)) == 1 && v.Item2.Any(s => NearlyEqual(s, 1))).ToList();
             var sol = new Solution();
             while (true)
             {
@@ -47,7 +47,7 @@ namespace RaikesSimplexService.Implementation
                     ).First() //There's only ever one element because the width of cb is equal to the height of the primes
                 ).OrderBy(s => s.Item2).FirstOrDefault();
                 //If all the C1' C2' etc are positive, then we're done - we've optimized the solution
-                if (enteringCol.Item2 >= 0)
+                if (enteringCol.Item2 >= 0 || NearlyZero(enteringCol.Item2))
                 {
                     if (model.ArtificialVariables > 0)
                     {
@@ -62,7 +62,7 @@ namespace RaikesSimplexService.Implementation
                         };
                         var zRowIndex = phase2.LHS.Column(0)
                             .EnumerateIndexed()
-                            .Where(pair => pair.Item2 == 1)
+                            .Where(pair => NearlyEqual(pair.Item2, 1.0))
                             .Select(pair => pair.Item1)
                             .FirstOrDefault();
                         phase2.LHS = phase2.LHS.RemoveRow(zRowIndex);
@@ -74,7 +74,7 @@ namespace RaikesSimplexService.Implementation
                         for (int i = 0; i < model.ArtificialVariables; i++)
                         {
                             var artificialCol = phase2.LHS.Column(phase2.LHS.ColumnCount - 1).Enumerate();
-                            if (artificialCol.Count(s => s != 0) == 1 && artificialCol.Any(s => s == 1))
+                            if (artificialCol.Count(s => !NearlyZero(s)) == 1 && artificialCol.Any(s => NearlyEqual(s, 1.0)))
                             {
                                 sol.Quality = SolutionQuality.Infeasible;
                                 return sol;
@@ -97,7 +97,7 @@ namespace RaikesSimplexService.Implementation
                 var divisor = primes.Where(s => s.Item1 == enteringCol.Item1).FirstOrDefault().Item2;
                 var ratios = xb.PointwiseDivide(divisor);
                 //Get the minimum ratio that's > 0 - that's our exiting basic variable
-                var exitingCol = ratios.EnumerateIndexed().Where(s => s.Item2 > 0).OrderBy(s => s.Item2).FirstOrDefault();
+                var exitingCol = ratios.EnumerateIndexed().Where(s => s.Item2 > 0 && !NearlyZero(s.Item2)).OrderBy(s => s.Item2).FirstOrDefault();
                 if (exitingCol == null)
                 {
                     sol.Quality = SolutionQuality.Unbounded;
@@ -155,10 +155,10 @@ namespace RaikesSimplexService.Implementation
 
         public static bool NearlyZero(double d)
         {
-            return NearlyEqualTo(d, 0.0);
+            return NearlyEqual(d, 0.0);
         }
 
-        public static bool NearlyEqualTo(double d, double goal)
+        public static bool NearlyEqual(double d, double goal)
         {
             return d >= goal - TOLERANCE && d <= goal + TOLERANCE;
         }
