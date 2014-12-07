@@ -13,7 +13,7 @@ namespace RaikesSimplexService.Implementation
 {
     public class Solver : ISolver
     {
-        private static readonly double ZERO_TOLERANCE = 0.0000001;
+        private static readonly double TOLERANCE = 0.0000001;
 
         public Solution Solve(Model m)
         {
@@ -155,7 +155,12 @@ namespace RaikesSimplexService.Implementation
 
         public static bool NearlyZero(double d)
         {
-            return d >= -ZERO_TOLERANCE && d <= ZERO_TOLERANCE;
+            return NearlyEqualTo(d, 0.0);
+        }
+
+        public static bool NearlyEqualTo(double d, double goal)
+        {
+            return d >= goal - TOLERANCE && d <= goal + TOLERANCE;
         }
     }
 }
