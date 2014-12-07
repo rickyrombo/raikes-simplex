@@ -95,6 +95,30 @@ namespace UnitTests
         {
             SolveModelTest(twoPhaseModel, SolutionGenerator.GetTwoPhaseSolution());
         }
+
+        [TestMethod()]
+        public void NearlyZeroPositiveTest()
+        {
+            double zero = -0.0000000001;
+            Assert.IsTrue(Solver.NearlyZero(zero));
+        }
+
+
+        [TestMethod()]
+        public void NearlyZeroNegativeTest()
+        {
+            double zero = -0.0000000001;
+            Assert.IsTrue(Solver.NearlyZero(zero));
+        }
+
+        [TestMethod()]
+        public void NearlyZeroFalseTest()
+        {
+            double nonZero = 0.01;
+            Assert.IsFalse(Solver.NearlyZero(nonZero));
+        }
+
+
         public void SolveModelTest(Model m, SolutionQuality expectedQuality)
         {
             Solver solver = new Solver();
@@ -108,6 +132,8 @@ namespace UnitTests
             Solution actualSolution = solver.Solve(m);
             Assert.IsTrue(expectedSolution.EqualValues(actualSolution));
         }
+
+
     }
 }
 

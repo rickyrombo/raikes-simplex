@@ -153,7 +153,7 @@ namespace RaikesSimplexService.Implementation
             }
         }
 
-        private static bool _nearlyZero(double d)
+        public static bool NearlyZero(double d)
         {
             return d >= -ZERO_TOLERANCE && d <= ZERO_TOLERANCE;
         }
