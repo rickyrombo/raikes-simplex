@@ -19,7 +19,7 @@ namespace UnitTests
     public class SolverTest
     {
         private TestContext testContextInstance;
-        private Model simpleModel, impossibleModel, unboundedModel, twoPhaseModel;
+        private Model simpleModel, impossibleModel, unboundedModel, twoPhaseModel, ashuModel;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -57,6 +57,7 @@ namespace UnitTests
         [TestInitialize()]
         public void MyTestInitialize()
         {
+            ashuModel = ModelGenerator.GetAshuModel();
             simpleModel = ModelGenerator.GetSimpleModel();
             impossibleModel = ModelGenerator.GetImpossibleModel();
             unboundedModel = ModelGenerator.GetUnboundedModel();
@@ -94,6 +95,12 @@ namespace UnitTests
         public void SolveTwoPhaseModelTest()
         {
             SolveModelTest(twoPhaseModel, SolutionGenerator.GetTwoPhaseSolution());
+        }
+
+        [TestMethod()]
+        public void SolveAshuModelTest()
+        {
+            SolveModelTest(ashuModel, SolutionGenerator.GetAshuSolution());
         }
 
         [TestMethod()]
