@@ -114,10 +114,50 @@ namespace UnitTests.Helpers
                 },
                 Goal = new Goal
                 {
-                    Coefficients = new double[] {6, 3},
+                    Coefficients = new double[] { 6, 3 },
                     ConstantTerm = 0
                 },
                 GoalKind = GoalKind.Maximize
+            };
+        }
+
+        public static Model GetAshuModel()
+        {
+            return new Model
+            {
+                Constraints = new List<LinearConstraint>
+                {
+                    new LinearConstraint 
+                    {
+                        Coefficients = new double[2] { 8, 12},
+                        Relationship = Relationship.GreaterThanOrEquals,
+                        Value = 24
+                    },
+                    new LinearConstraint 
+                    {
+                        Coefficients = new double[2] {12, 12},
+                        Relationship = Relationship.GreaterThanOrEquals,
+                        Value = 36
+                    },
+                    new LinearConstraint 
+                    {
+                        Coefficients = new double[2] {2, 1},
+                        Relationship = Relationship.GreaterThanOrEquals,
+                        Value = 4
+                    },
+                    new LinearConstraint 
+                    {
+                        Coefficients = new double[2] {1, 1},
+                        Relationship = Relationship.LessThanOrEquals,
+                        Value = 5
+                    },
+                },
+                Goal = new Goal
+                {
+                    Coefficients = new double[2] { .2, .3 },
+                    ConstantTerm = 0
+                },
+                GoalKind = GoalKind.Minimize
             };
         }
     }
