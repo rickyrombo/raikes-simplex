@@ -125,10 +125,10 @@ namespace RaikesSimplexService.Implementation
             //Sum all variables for the w row
             foreach (var rowAndIndex in this.LHS.EnumerateRowsIndexed().Where(rowAndIndex => ContainsArtificalVariable(rowAndIndex.Item2)))
             {
+                this.ConstantTerm = this.ConstantTerm - this.RHS.ElementAt(rowAndIndex.Item1);
                 foreach (var pair in rowAndIndex.Item2.EnumerateIndexed())
                 {
                     this.ObjectiveRow.At(0, pair.Item1, this.ObjectiveRow.At(0, pair.Item1) - pair.Item2);
-                    this.ConstantTerm = this.ConstantTerm - this.RHS.ElementAt(rowAndIndex.Item1);
                 }
             }
             //Set artifical values in the objective row to zero
@@ -166,11 +166,12 @@ namespace RaikesSimplexService.Implementation
         {
             if (format == OutputFormat.Expression)
             {
-                return string.Format("Constraints:\n{0}\nObjective: Maximize\nZ\t+ {1} \t= 0",
+                return string.Format("Constraints:\n{0}\nObjective: Maximize\nZ\t+ {1} \t= {2}",
                     string.Join("\n", LHS.EnumerateRowsIndexed().Select(
                         r => string.Format("{0}\t= {1}", _stringExpression(r.Item2), this.RHS.At(r.Item1))
                     )),
-                    _stringExpression(ObjectiveRow.Row(0))
+                    _stringExpression(ObjectiveRow.Row(0)),
+                    ConstantTerm
                 );
             }
             if (format == OutputFormat.Original)
