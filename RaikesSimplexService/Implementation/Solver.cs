@@ -13,6 +13,8 @@ namespace RaikesSimplexService.Implementation
 {
     public class Solver : ISolver
     {
+        private static readonly double ZERO_TOLERANCE = 0.0000001;
+
         public Solution Solve(Model m)
         {
             var model = StandardModel.FromModel(m);
@@ -23,7 +25,8 @@ namespace RaikesSimplexService.Implementation
             //Get initial basic columns
             var basicColumns = model.LHS.EnumerateColumnsIndexed().Where(v => v.Item2.Count(s => s != 0) == 1 && v.Item2.Any(s => s == 1)).ToList();
             var sol = new Solution();
-            while (true){
+            while (true)
+            {
                 var basicColumnIndices = basicColumns.Select(s => s.Item1).ToList();
                 var nonbasicColumns = model.LHS.EnumerateColumnsIndexed().Where(v => !basicColumnIndices.Contains(v.Item1)).ToList();
                 var bInv = Matrix<double>.Build.DenseOfColumnVectors(basicColumns.Select(s => s.Item2)).Inverse();
@@ -44,7 +47,8 @@ namespace RaikesSimplexService.Implementation
                     ).First() //There's only ever one element because the width of cb is equal to the height of the primes
                 ).OrderBy(s => s.Item2).FirstOrDefault();
                 //If all the C1' C2' etc are positive, then we're done - we've optimized the solution
-                if (enteringCol.Item2 >= 0) {
+                if (enteringCol.Item2 >= 0)
+                {
                     if (model.ArtificialVariables > 0)
                     {
                         //.Where(pair => pair.Item1 < model.SlackVariables + model.DecisionVariables && pair.Item1 > 0)
@@ -85,7 +89,7 @@ namespace RaikesSimplexService.Implementation
                         sol.Decisions = new double[model.DecisionVariables];
                         _mapDecisionVariables(sol.Decisions, basicColumnIndices, xb);
                         sol.OptimalValue = _calculateGoalValue(sol.Decisions, model.OriginalModel.Goal.Coefficients);
-                        sol.AlternateSolutionsExist = sol.Decisions.Any(s => s == 0.0);
+                        sol.AlternateSolutionsExist = sol.Decisions.Any(s => NearlyZero(s));
                     }
                     break;
                 }
@@ -147,6 +151,11 @@ namespace RaikesSimplexService.Implementation
                     decisionVariables[basicColumnIndices[i]] = finalVariableValues.At(i);
                 }
             }
+        }
+
+        public static bool NearlyZero(double d)
+        {
+            return d >= -ZERO_TOLERANCE && d <= ZERO_TOLERANCE;
         }
     }
 }
