@@ -89,7 +89,7 @@ namespace RaikesSimplexService.Implementation
                         sol.Decisions = new double[model.DecisionVariables];
                         _mapDecisionVariables(sol.Decisions, basicColumnIndices, xb);
                         sol.OptimalValue = _calculateGoalValue(sol.Decisions, model.OriginalModel.Goal.Coefficients);
-                        sol.AlternateSolutionsExist = sol.Decisions.Any(s => s == 0.0);
+                        sol.AlternateSolutionsExist = sol.Decisions.Any(s => NearlyZero(s));
                     }
                     break;
                 }
