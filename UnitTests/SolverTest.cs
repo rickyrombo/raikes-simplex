@@ -100,6 +100,7 @@ namespace UnitTests
         [TestMethod()]
         public void SolveAshuModelTest()
         {
+            Console.WriteLine(StandardModel.FromModel(ashuModel).ToString(StandardModel.OutputFormat.Expression));
             SolveModelTest(ashuModel, SolutionGenerator.GetAshuSolution());
         }
 
