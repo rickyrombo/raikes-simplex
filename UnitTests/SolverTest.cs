@@ -19,7 +19,7 @@ namespace UnitTests
     public class SolverTest
     {
         private TestContext testContextInstance;
-        private Model simpleModel, impossibleModel, unboundedModel;
+        private Model simpleModel, impossibleModel, unboundedModel, twoPhaseModel;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -60,6 +60,7 @@ namespace UnitTests
             simpleModel = ModelGenerator.GetSimpleModel();
             impossibleModel = ModelGenerator.GetImpossibleModel();
             unboundedModel = ModelGenerator.GetUnboundedModel();
+            twoPhaseModel = ModelGenerator.GetTwoPhaseModel();
         }
         //
         //Use TestCleanup to run code after each test has run
@@ -89,6 +90,11 @@ namespace UnitTests
             SolveModelTest(unboundedModel, SolutionQuality.Unbounded);
         }
 
+        [TestMethod()]
+        public void SolveTwoPhaseModelTest()
+        {
+            SolveModelTest(twoPhaseModel, SolutionGenerator.GetTwoPhaseSolution());
+        }
         public void SolveModelTest(Model m, SolutionQuality expectedQuality)
         {
             Solver solver = new Solver();
@@ -102,7 +108,6 @@ namespace UnitTests
             Solution actualSolution = solver.Solve(m);
             Assert.IsTrue(expectedSolution.EqualValues(actualSolution));
         }
-
     }
 }
 

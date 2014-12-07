@@ -23,5 +23,10 @@ namespace UnitTests.Helpers
         {
             return StandardModel.FromModel(ModelGenerator.GetUnboundedModel());
         }
+
+        public static StandardModel GetTwoPhaseStandardModel()
+        {
+            return StandardModel.FromModel(ModelGenerator.GetTwoPhaseModel());
+        }
     }
 }

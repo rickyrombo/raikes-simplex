@@ -18,5 +18,15 @@ namespace UnitTests.Helpers
                 Decisions = new double[] { 0, 3.333333333333333, 0 }
             };
         }
+
+        public static Solution GetTwoPhaseSolution()
+        {
+            return new Solution
+            {
+                AlternateSolutionsExist = true,
+                OptimalValue = 6,
+                Decisions = new double[] { 1, 0 },
+            };
+        }
     }
 }

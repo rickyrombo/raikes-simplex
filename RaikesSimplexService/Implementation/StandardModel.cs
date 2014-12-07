@@ -18,16 +18,16 @@ namespace RaikesSimplexService.Implementation
             Expression
         }
         public Model OriginalModel { get; private set; }
-        public Matrix<double> LHS { get; private set; }
-        public Vector<double> RHS { get; private set; }
-        public Matrix<double> ObjectiveRow { get; private set; }
+        public Matrix<double> LHS { get; set; }
+        public Vector<double> RHS { get; set; }
+        public Matrix<double> ObjectiveRow { get; set; }
 
         public int DecisionVariables { get; private set; }
         public int SlackVariables { get; private set; }
         public int ArtificialVariables { get; private set; }
         #endregion
 
-        private StandardModel(int constraintCount, int decisionCount, int slackCount, int artificialCount)
+        public StandardModel(int constraintCount, int decisionCount, int slackCount, int artificialCount, Model originalModel)
         {
             var totalVars = decisionCount + slackCount + artificialCount;
             this.LHS = Matrix<double>.Build.Dense(constraintCount, totalVars);
@@ -36,6 +36,7 @@ namespace RaikesSimplexService.Implementation
             this.DecisionVariables = decisionCount;
             this.SlackVariables = slackCount;
             this.ArtificialVariables = artificialCount;
+            this.OriginalModel = originalModel;
         }
 
         /// <summary>
@@ -47,15 +48,15 @@ namespace RaikesSimplexService.Implementation
         {
             var artificialCount = model.Constraints.Count(s => s.Relationship == Relationship.GreaterThanOrEquals || s.Relationship == Relationship.Equals);
             var slackCount = model.Constraints.Count(s => s.Relationship == Relationship.LessThanOrEquals || s.Relationship == Relationship.GreaterThanOrEquals);
+            var wombo = ((artificialCount > 0) ? 1 : 0);
 
             var standardModel = new StandardModel(
-                model.Constraints.Count(),
-                model.Constraints.First().Coefficients.Length,
+                model.Constraints.Count() + wombo,
+                model.Constraints.First().Coefficients.Length + wombo,
                 slackCount,
-                artificialCount
+                artificialCount,
+                model
             );
-
-            standardModel.OriginalModel = model;
 
             var sVar = 0; //Keeps track of where to put the next slack variable
             var aVar = 0; //Keeps track of where to put the next artificial variable
@@ -79,10 +80,17 @@ namespace RaikesSimplexService.Implementation
                     addedVariables[slackCount + aVar++] = 1;
                 }
                 coeffs.AddRange(addedVariables);
+                if (artificialCount > 0)
+                {
+                    //Insert a zero before the rest of the rest of the constraints for "Z" in two phase
+                    coeffs.Insert(0, 0);
+                }
                 standardModel.LHS.SetRow(i++, coeffs.ToArray<double>());
             }
-
-            var goalCoeffs = model.Goal.Coefficients.ToArray<double>();
+            //Catch for artificial column (z)
+            var goalCoeffsList = (artificialCount == 0) ? new List<double>() : new List<double>{0};
+            goalCoeffsList.AddRange(model.Goal.Coefficients);
+            var goalCoeffs = goalCoeffsList.ToArray<double>();
             Array.Resize<double>(ref goalCoeffs, goalCoeffs.Length + slackCount + artificialCount);
             if (model.GoalKind == GoalKind.Maximize)
             {
@@ -92,8 +100,46 @@ namespace RaikesSimplexService.Implementation
             {
                 standardModel.ObjectiveRow.SetRow(0, goalCoeffs);
             }
-            standardModel.RHS.SetValues(model.Constraints.Select(c => c.Value).ToArray<double>());
+
+            var constraintRhs = model.Constraints.Select(c => c.Value).ToList<double>();
+            if (artificialCount > 0)
+            {
+                constraintRhs.Add(0);
+            }
+            standardModel.RHS.SetValues(constraintRhs.ToArray<double>());
+            if (standardModel.ArtificialVariables > 0)
+            {
+                standardModel.AddWRow();
+            }
             return standardModel;
+        }
+
+        private void AddWRow()
+        {
+            //move objective row to a constraint
+            this.LHS.SetRow(this.LHS.RowCount - 1, this.ObjectiveRow.Row(0).ToArray<double>());
+            this.LHS.At(this.LHS.RowCount - 1, 0, 1);
+            this.ObjectiveRow.SetRow(0, new double[this.LHS.ColumnCount]);
+            //Sum all variables for the w row
+            foreach(var row in this.LHS.EnumerateRows().Where(r => ContainsArtificalVariable(r)))
+            {
+                foreach (var pair in row.EnumerateIndexed())
+                {
+                    this.ObjectiveRow.At(0, pair.Item1, this.ObjectiveRow.At(0, pair.Item1) - pair.Item2);
+                }
+            }
+            //Set artifical values in the objective row to zero
+            for (var c = DecisionVariables + SlackVariables; c < this.ObjectiveRow.ColumnCount; c++)
+            {
+                this.ObjectiveRow.At(0, c, 0);
+            }
+        }
+
+        private bool ContainsArtificalVariable(Vector<double> r)
+        {
+            return r.EnumerateIndexed().Any(
+                t => t.Item1 >= this.DecisionVariables + this.SlackVariables && t.Item2 == 1
+            );
         }
 
         /// <summary>
