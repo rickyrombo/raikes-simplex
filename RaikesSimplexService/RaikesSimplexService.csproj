@@ -58,6 +58,7 @@
     <Compile Include="DataModel\Solution.cs" />
     <Compile Include="DataModel\SolutionQuality.cs" />
     <Compile Include="Implementation\Extensions\DataModelEqualValues.cs" />
+    <Compile Include="Implementation\Extensions\Delta.cs" />
     <Compile Include="Implementation\StandardModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Implementation\Solver.cs" />

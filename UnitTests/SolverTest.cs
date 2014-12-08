@@ -19,7 +19,7 @@ namespace UnitTests
     public class SolverTest
     {
         private TestContext testContextInstance;
-        private Model simpleModel, impossibleModel, unboundedModel, twoPhaseModel;
+        private Model simpleModel, impossibleModel, unboundedModel, twoPhaseModel, ashuModel;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -57,6 +57,7 @@ namespace UnitTests
         [TestInitialize()]
         public void MyTestInitialize()
         {
+            ashuModel = ModelGenerator.GetAshuModel();
             simpleModel = ModelGenerator.GetSimpleModel();
             impossibleModel = ModelGenerator.GetImpossibleModel();
             unboundedModel = ModelGenerator.GetUnboundedModel();
@@ -81,7 +82,7 @@ namespace UnitTests
         [TestMethod()]
         public void SolveImpossibleModelTest()
         {
-            SolveModelTest(impossibleModel, SolutionQuality.Infeasible);
+            SolveModelTest(impossibleModel, SolutionQuality.Infeasible, SolutionQuality.Unbounded);
         }
 
         [TestMethod()]
@@ -97,10 +98,16 @@ namespace UnitTests
         }
 
         [TestMethod()]
+        public void SolveAshuModelTest()
+        {
+            SolveModelTest(ashuModel, SolutionGenerator.GetAshuSolution());
+        }
+
+        [TestMethod()]
         public void NearlyZeroPositiveTest()
         {
             double zero = -0.0000000001;
-            Assert.IsTrue(Solver.NearlyZero(zero));
+            Assert.IsTrue(zero.NearlyZero());
         }
 
 
@@ -108,22 +115,22 @@ namespace UnitTests
         public void NearlyZeroNegativeTest()
         {
             double zero = -0.0000000001;
-            Assert.IsTrue(Solver.NearlyZero(zero));
+            Assert.IsTrue(zero.NearlyZero());
         }
 
         [TestMethod()]
         public void NearlyZeroFalseTest()
         {
             double nonZero = 0.01;
-            Assert.IsFalse(Solver.NearlyZero(nonZero));
+            Assert.IsFalse(nonZero.NearlyZero());
         }
 
 
-        public void SolveModelTest(Model m, SolutionQuality expectedQuality)
+        public void SolveModelTest(Model m, params SolutionQuality[] expectedQualities)
         {
             Solver solver = new Solver();
             Solution actualSolution = solver.Solve(m);
-            Assert.AreEqual(expectedQuality, actualSolution.Quality);
+            Assert.IsTrue(expectedQualities.Any(qual => qual == actualSolution.Quality));
         }
 
         public void SolveModelTest(Model m, Solution expectedSolution)

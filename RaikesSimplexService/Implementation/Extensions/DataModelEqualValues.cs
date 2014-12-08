@@ -10,14 +10,14 @@ namespace RaikesSimplexService.Implementation.Extensions
     {
         public static bool EqualValues(this Goal self, Goal other)
         {
-            bool sameCoefficients = self.Coefficients.SequenceEqual(other.Coefficients);
+            bool sameCoefficients = self.Coefficients.EqualValues(other.Coefficients);
             bool sameConstantTerm = self.ConstantTerm == other.ConstantTerm;
             return sameCoefficients && sameConstantTerm;
         }
 
         public static bool EqualValues(this LinearConstraint self, LinearConstraint other)
         {
-            bool sameCoefficients = self.Coefficients.SequenceEqual(other.Coefficients);
+            bool sameCoefficients = self.Coefficients.EqualValues(other.Coefficients);
             bool sameRelationship = self.Relationship == other.Relationship;
             bool sameValue = self.Value == other.Value;
             return sameCoefficients && sameRelationship && sameValue;
@@ -40,10 +40,18 @@ namespace RaikesSimplexService.Implementation.Extensions
 
         public static bool EqualValues(this Solution self, Solution other)
         {
-            bool sameDecisions = self.Decisions.SequenceEqual(other.Decisions);
+            bool sameOptimal = self.OptimalValue.NearlyEqual(other.OptimalValue);
+            bool sameDecisions = self.Decisions.EqualValues(other.Decisions);
             bool sameQuality = self.Quality == other.Quality;
-            bool sameAltSols = self.AlternateSolutionsExist == other.AlternateSolutionsExist;
-            return sameDecisions && sameQuality && sameAltSols;
+            bool sameAltSols = self.AlternateSolutionsExist == other.AlternateSolutionsExist
+            return sameDecisions && sameQuality && sameOptimal && sameAltSols;
+        }
+
+        public static bool EqualValues(this double[] self, double[] other)
+        {
+            var pairs = self.Zip(other, (a, b) => new { First = a, Second = b });
+            bool allPairsEqual = pairs.All(pair => pair.First.NearlyEqual(pair.Second));
+            return allPairsEqual;
         }
 
     }

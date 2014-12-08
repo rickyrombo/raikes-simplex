@@ -111,7 +111,7 @@ namespace UnitTests
         [TestMethod()]
         public void SimpleToStringExpressionTest()
         {
-            String expectedStringification = "Constraints:\n1 X1\t+ 3 X2\t+ 4 X3\t+ 1 S1\t+ 0 S2\t= 10\n4 X1\t+ 3 X2\t+ 2 X3\t+ 0 S1\t+ 1 S2\t= 50\nObjective: Maximize\nZ\t+ -2 X1\t+ -6 X2\t+ -4 X3\t+ 0 S1\t+ 0 S2 \t= 0";
+            String expectedStringification = "Constraints:\n1 X1\t+ 3 X2\t+ 4 X3\t+ 1 S1\t+ 0 S2\t= 10\n4 X1\t+ 3 X2\t+ 2 X3\t+ 0 S1\t+ 1 S2\t= 50\nObjective: Maximize\nZ\t+ -2 X1\t+ -6 X2\t+ -4 X3\t+ 0 S1\t+ 0 S2 \t= 20";
             ToStringExpressionTest(simpleStandardModel, expectedStringification);
         }
 

@@ -15,7 +15,8 @@ namespace UnitTests.Helpers
             {
                 AlternateSolutionsExist = true,
                 OptimalValue = 20,
-                Decisions = new double[] { 0, 3.333333333333333, 0 }
+                Decisions = new double[] { 0, 3.333333333333333, 0 },
+                Quality = SolutionQuality.Optimal
             };
         }
 
@@ -26,6 +27,18 @@ namespace UnitTests.Helpers
                 AlternateSolutionsExist = true,
                 OptimalValue = 6,
                 Decisions = new double[] { 1, 0 },
+                Quality = SolutionQuality.Optimal
+            };
+        }
+
+        public static Solution GetAshuSolution()
+        {
+            return new Solution
+            {
+                AlternateSolutionsExist = true,
+                OptimalValue = .6,
+                Quality = SolutionQuality.Optimal,
+                Decisions = new double[] { 3, 0 }
             };
         }
     }

@@ -25,6 +25,7 @@ namespace RaikesSimplexService.Implementation
         public int DecisionVariables { get; private set; }
         public int SlackVariables { get; private set; }
         public int ArtificialVariables { get; private set; }
+        public double ConstantTerm { get; set; }
         #endregion
 
         public StandardModel(int constraintCount, int decisionCount, int slackCount, int artificialCount, Model originalModel)
@@ -37,6 +38,7 @@ namespace RaikesSimplexService.Implementation
             this.SlackVariables = slackCount;
             this.ArtificialVariables = artificialCount;
             this.OriginalModel = originalModel;
+            this.ConstantTerm = originalModel.Goal.ConstantTerm;
         }
 
         /// <summary>
@@ -88,7 +90,7 @@ namespace RaikesSimplexService.Implementation
                 standardModel.LHS.SetRow(i++, coeffs.ToArray<double>());
             }
             //Catch for artificial column (z)
-            var goalCoeffsList = (artificialCount == 0) ? new List<double>() : new List<double>{0};
+            var goalCoeffsList = (artificialCount == 0) ? new List<double>() : new List<double> { 0 };
             goalCoeffsList.AddRange(model.Goal.Coefficients);
             var goalCoeffs = goalCoeffsList.ToArray<double>();
             Array.Resize<double>(ref goalCoeffs, goalCoeffs.Length + slackCount + artificialCount);
@@ -121,9 +123,10 @@ namespace RaikesSimplexService.Implementation
             this.LHS.At(this.LHS.RowCount - 1, 0, 1);
             this.ObjectiveRow.SetRow(0, new double[this.LHS.ColumnCount]);
             //Sum all variables for the w row
-            foreach(var row in this.LHS.EnumerateRows().Where(r => ContainsArtificalVariable(r)))
+            foreach (var rowAndIndex in this.LHS.EnumerateRowsIndexed().Where(rowAndIndex => ContainsArtificalVariable(rowAndIndex.Item2)))
             {
-                foreach (var pair in row.EnumerateIndexed())
+                this.ConstantTerm = this.ConstantTerm - this.RHS.ElementAt(rowAndIndex.Item1);
+                foreach (var pair in rowAndIndex.Item2.EnumerateIndexed())
                 {
                     this.ObjectiveRow.At(0, pair.Item1, this.ObjectiveRow.At(0, pair.Item1) - pair.Item2);
                 }
@@ -163,11 +166,12 @@ namespace RaikesSimplexService.Implementation
         {
             if (format == OutputFormat.Expression)
             {
-                return string.Format("Constraints:\n{0}\nObjective: Maximize\nZ\t+ {1} \t= 0",
+                return string.Format("Constraints:\n{0}\nObjective: Maximize\nZ\t+ {1} \t= {2}",
                     string.Join("\n", LHS.EnumerateRowsIndexed().Select(
                         r => string.Format("{0}\t= {1}", _stringExpression(r.Item2), this.RHS.At(r.Item1))
                     )),
-                    _stringExpression(ObjectiveRow.Row(0))
+                    _stringExpression(ObjectiveRow.Row(0)),
+                    ConstantTerm
                 );
             }
             if (format == OutputFormat.Original)
