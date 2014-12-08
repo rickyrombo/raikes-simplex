@@ -108,17 +108,23 @@ namespace RaikesSimplexService.Implementation
                 //else, get the divisor from the Pn' we selected
                 var enteringVar = minCnPrime;
                 var divisor = primes.Where(s => s.Item1 == enteringVar.Item1).FirstOrDefault().Item2;
-                var ratios = xb.PointwiseDivide(divisor);
+                Vector<double> ratios = xb.PointwiseDivide(divisor);
+                List<Tuple<int, double>> columnsWithRatios = new List<Tuple<int, double>>();
+                for (int i = 0; i < basicColumns.Count; i++)
+                {
+                    columnsWithRatios.Add(new Tuple<int, double>(basicColumnIndices[i], ratios[i]));
+                }
                 //Get the minimum ratio that's > 0 - that's our exiting basic variable
-                var exitingCol = ratios.EnumerateIndexed().Where(s => s.Item2 > 0 && !NearlyZero(s.Item2)).OrderBy(s => s.Item2).FirstOrDefault();
-                if (exitingCol == null)
+                var exitingCol = ratios.EnumerateIndexed().Where(s => s.Item2 > 0 && !NearlyZero(s.Item2)).OrderBy(s => s.Item2);
+                if (exitingCol.Count() == 0)
                 {
                     sol.Quality = SolutionQuality.Unbounded;
                     break;
                 }
+                var exitCol = exitingCol.Where(s => model.ArtificialVariables == 0 || IndexArtificial(basicColumns[s.Item1].Item1, model)).First();
                 var newCol = nonbasicColumns.FirstOrDefault(s => s.Item1 == enteringVar.Item1);
                 //basicColumns[exitingCol.Item1] = newCol;
-                basicColumns.RemoveAt(exitingCol.Item1);
+                basicColumns.RemoveAt(exitCol.Item1);
                 int insertHere = 0;
                 foreach (var col in basicColumnIndices)
                 {
@@ -132,6 +138,11 @@ namespace RaikesSimplexService.Implementation
 
             }
             return sol;
+        }
+
+        public bool IndexArtificial(int i, StandardModel model)
+        {
+            return i >= model.DecisionVariables + model.SlackVariables;
         }
 
         /// <summary>
