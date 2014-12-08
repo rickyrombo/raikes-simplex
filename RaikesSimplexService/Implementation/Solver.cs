@@ -123,7 +123,7 @@ namespace RaikesSimplexService.Implementation
                 }
                 var exitCol = exitingCol.Where(s => model.ArtificialVariables == 0 || IndexArtificial(basicColumns[s.Item1].Item1, model)).First();
                 var newCol = nonbasicColumns.FirstOrDefault(s => s.Item1 == enteringVar.Item1);
-                //basicColumns[exitingCol.Item1] = newCol;
+                //basicColumns[exitCol.Item1] = newCol;
                 basicColumns.RemoveAt(exitCol.Item1);
                 int insertHere = 0;
                 foreach (var col in basicColumnIndices)
