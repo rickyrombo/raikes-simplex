@@ -82,7 +82,7 @@ namespace UnitTests
         [TestMethod()]
         public void SolveImpossibleModelTest()
         {
-            SolveModelTest(impossibleModel, SolutionQuality.Infeasible);
+            SolveModelTest(impossibleModel, SolutionQuality.Infeasible, SolutionQuality.Unbounded);
         }
 
         [TestMethod()]
@@ -128,11 +128,11 @@ namespace UnitTests
         }
 
 
-        public void SolveModelTest(Model m, SolutionQuality expectedQuality)
+        public void SolveModelTest(Model m, params SolutionQuality[] expectedQualities)
         {
             Solver solver = new Solver();
             Solution actualSolution = solver.Solve(m);
-            Assert.AreEqual(expectedQuality, actualSolution.Quality);
+            Assert.IsTrue(expectedQualities.Any(qual => qual == actualSolution.Quality));
         }
 
         public void SolveModelTest(Model m, Solution expectedSolution)
