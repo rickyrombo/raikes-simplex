@@ -43,7 +43,7 @@ namespace RaikesSimplexService.Implementation.Extensions
             bool sameOptimal = self.OptimalValue.NearlyEqual(other.OptimalValue);
             bool sameDecisions = self.Decisions.EqualValues(other.Decisions);
             bool sameQuality = self.Quality == other.Quality;
-            bool sameAltSols = self.AlternateSolutionsExist == other.AlternateSolutionsExist
+            bool sameAltSols = self.AlternateSolutionsExist == other.AlternateSolutionsExist;
             return sameDecisions && sameQuality && sameOptimal && sameAltSols;
         }
 
