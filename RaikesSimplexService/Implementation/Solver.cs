@@ -8,12 +8,12 @@ using RaikesSimplexService.Contracts;
 using RaikesSimplexService.DataModel;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
+using RaikesSimplexService.Implementation.Extensions;
 
 namespace RaikesSimplexService.Implementation
 {
     public class Solver : ISolver
     {
-        private static readonly double TOLERANCE = 0.0000001;
 
         public Solution Solve(Model m)
         {
@@ -39,7 +39,7 @@ namespace RaikesSimplexService.Implementation
         public Solution SolveStandardModel(StandardModel model)
         {
             //Get initial basic columns
-            var basicColumns = model.LHS.EnumerateColumnsIndexed().Where(v => v.Item2.Count(s => !NearlyZero(s)) == 1 && v.Item2.Any(s => NearlyEqual(s, 1))).ToList();
+            var basicColumns = model.LHS.EnumerateColumnsIndexed().Where(v => v.Item2.Count(s => !s.NearlyZero()) == 1 && v.Item2.Any(s => s.NearlyEqual(1))).ToList();
             var sol = new Solution();
             while (true)
             {
@@ -59,7 +59,7 @@ namespace RaikesSimplexService.Implementation
                 //Calculate C1' C2' etc and select the minimum - that's our entering basic variable
                 var minCnPrime = GetMinCnPrime(primes, model, cb, basicColumnIndices);
                 //If all the C1' C2' etc are positive, then we're done - we've optimized the solution
-                if (minCnPrime.Item2 >= 0 || NearlyZero(minCnPrime.Item2))
+                if (minCnPrime.Item2 >= 0 || minCnPrime.Item2.NearlyZero())
                 {
                     if (model.ArtificialVariables > 0)
                     {
@@ -74,7 +74,7 @@ namespace RaikesSimplexService.Implementation
                         };
                         var zRowIndex = phase2.LHS.Column(0)
                             .EnumerateIndexed()
-                            .Where(pair => NearlyEqual(pair.Item2, 1.0))
+                            .Where(pair => pair.Item2.NearlyEqual(1.0))
                             .Select(pair => pair.Item1)
                             .FirstOrDefault();
                         phase2.LHS = phase2.LHS.RemoveRow(zRowIndex);
@@ -86,7 +86,7 @@ namespace RaikesSimplexService.Implementation
                         for (int i = 0; i < model.ArtificialVariables; i++)
                         {
                             var artificialCol = phase2.LHS.Column(phase2.LHS.ColumnCount - 1).Enumerate();
-                            if (artificialCol.Count(s => !NearlyZero(s)) == 1 && artificialCol.Any(s => NearlyEqual(s, 1.0)))
+                            if (artificialCol.Count(s => !s.NearlyZero()) == 1 && artificialCol.Any(s => s.NearlyEqual(1.0)))
                             {
                                 sol.Quality = SolutionQuality.Infeasible;
                                 return sol;
@@ -101,7 +101,7 @@ namespace RaikesSimplexService.Implementation
                         sol.Decisions = new double[model.DecisionVariables];
                         _mapDecisionVariables(sol.Decisions, basicColumnIndices, xb);
                         sol.OptimalValue = _calculateGoalValue(sol.Decisions, model.OriginalModel.Goal.Coefficients);
-                        sol.AlternateSolutionsExist = sol.Decisions.Any(s => NearlyZero(s));
+                        sol.AlternateSolutionsExist = sol.Decisions.Any(s => s.NearlyZero());
                     }
                     break;
                 }
@@ -115,7 +115,7 @@ namespace RaikesSimplexService.Implementation
                     columnsWithRatios.Add(new Tuple<int, double>(basicColumnIndices[i], ratios[i]));
                 }
                 //Get the minimum ratio that's > 0 - that's our exiting basic variable
-                var exitingCol = ratios.EnumerateIndexed().Where(s => s.Item2 > 0 && !NearlyZero(s.Item2)).OrderBy(s => s.Item2);
+                var exitingCol = ratios.EnumerateIndexed().Where(s => s.Item2 > 0 && !s.Item2.NearlyZero()).OrderBy(s => s.Item2);
                 if (exitingCol.Count() == 0)
                 {
                     sol.Quality = SolutionQuality.Unbounded;
@@ -177,16 +177,6 @@ namespace RaikesSimplexService.Implementation
                     decisionVariables[basicColumnIndices[i]] = finalVariableValues.At(i);
                 }
             }
-        }
-
-        public static bool NearlyZero(double d)
-        {
-            return NearlyEqual(d, 0.0);
-        }
-
-        public static bool NearlyEqual(double d, double goal)
-        {
-            return d >= goal - TOLERANCE && d <= goal + TOLERANCE;
         }
     }
 }

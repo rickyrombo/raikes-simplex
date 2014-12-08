@@ -40,7 +40,7 @@ namespace RaikesSimplexService.Implementation.Extensions
 
         public static bool EqualValues(this Solution self, Solution other)
         {
-            bool sameOptimal = Solver.NearlyEqual(self.OptimalValue, other.OptimalValue);
+            bool sameOptimal = self.OptimalValue.NearlyEqual(other.OptimalValue);
             bool sameDecisions = self.Decisions.EqualValues(other.Decisions);
             bool sameQuality = self.Quality == other.Quality;
             return sameDecisions && sameQuality && sameOptimal;
@@ -49,7 +49,7 @@ namespace RaikesSimplexService.Implementation.Extensions
         public static bool EqualValues(this double[] self, double[] other)
         {
             var pairs = self.Zip(other, (a, b) => new { First = a, Second = b });
-            bool allPairsEqual = pairs.All(pair => Solver.NearlyEqual(pair.First, pair.Second));
+            bool allPairsEqual = pairs.All(pair => pair.First.NearlyEqual(pair.Second));
             return allPairsEqual;
         }
 

@@ -109,7 +109,7 @@ namespace UnitTests
         public void NearlyZeroPositiveTest()
         {
             double zero = -0.0000000001;
-            Assert.IsTrue(Solver.NearlyZero(zero));
+            Assert.IsTrue(zero.NearlyZero());
         }
 
 
@@ -117,14 +117,14 @@ namespace UnitTests
         public void NearlyZeroNegativeTest()
         {
             double zero = -0.0000000001;
-            Assert.IsTrue(Solver.NearlyZero(zero));
+            Assert.IsTrue(zero.NearlyZero());
         }
 
         [TestMethod()]
         public void NearlyZeroFalseTest()
         {
             double nonZero = 0.01;
-            Assert.IsFalse(Solver.NearlyZero(nonZero));
+            Assert.IsFalse(nonZero.NearlyZero());
         }
 
 
