@@ -115,13 +115,12 @@ namespace RaikesSimplexService.Implementation
                     columnsWithRatios.Add(new Tuple<int, double>(basicColumnIndices[i], ratios[i]));
                 }
                 //Get the minimum ratio that's > 0 - that's our exiting basic variable
-                var exitingCol = ratios.EnumerateIndexed().Where(s => s.Item2 > 0 && !s.Item2.NearlyZero()).OrderBy(s => s.Item2);
-                if (exitingCol.Count() == 0)
+                var exitCol = ratios.EnumerateIndexed().Where(s => s.Item2 > 0 && !s.Item2.NearlyZero() && model.ArtificialVariables == 0 || IndexArtificial(basicColumns[s.Item1].Item1, model)).OrderBy(s => s.Item2).FirstOrDefault();
+                if (exitCol == null)
                 {
                     sol.Quality = SolutionQuality.Unbounded;
                     break;
                 }
-                var exitCol = exitingCol.Where(s => model.ArtificialVariables == 0 || IndexArtificial(basicColumns[s.Item1].Item1, model)).First();
                 var newCol = nonbasicColumns.FirstOrDefault(s => s.Item1 == enteringVar.Item1);
                 //basicColumns[exitCol.Item1] = newCol;
                 basicColumns.RemoveAt(exitCol.Item1);
