@@ -94,6 +94,7 @@ namespace UnitTests
         [TestMethod()]
         public void SolveTwoPhaseModelTest()
         {
+            Console.WriteLine(StandardModel.FromModel(twoPhaseModel).ToString(StandardModel.OutputFormat.Expression));
             SolveModelTest(twoPhaseModel, SolutionGenerator.GetTwoPhaseSolution());
         }
 

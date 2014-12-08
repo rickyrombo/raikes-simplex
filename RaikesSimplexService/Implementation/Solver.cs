@@ -20,6 +20,22 @@ namespace RaikesSimplexService.Implementation
             var model = StandardModel.FromModel(m);
             return SolveStandardModel(model);
         }
+
+        public Tuple<int, double> CnPrime(StandardModel model, Matrix<double> cb, Tuple<int, Vector<double>> p)
+        {
+            double cn = model.ObjectiveRow.At(0, p.Item1);
+            double cnPrime = cn - cb.Multiply(p.Item2).At(0);
+            return new Tuple<int, double>(p.Item1, cnPrime);
+        }
+
+        public Tuple<int, double> GetMinCnPrime(IEnumerable<Tuple<int, Vector<double>>> primes, StandardModel model, Matrix<double> cb, List<int> basicColumnIndices)
+        {
+            var cnPrimes = primes.Where(p => !basicColumnIndices.Contains(p.Item1)).Select(
+                    p => CnPrime(model, cb, p)
+                );
+            Tuple<int, double> minCnPrime = cnPrimes.OrderBy(s => s.Item2).FirstOrDefault(); // Get min
+            return minCnPrime;
+        }
         public Solution SolveStandardModel(StandardModel model)
         {
             //Get initial basic columns
@@ -27,11 +43,11 @@ namespace RaikesSimplexService.Implementation
             var sol = new Solution();
             while (true)
             {
-                var basicColumnIndices = basicColumns.Select(s => s.Item1).ToList();
+                List<int> basicColumnIndices = basicColumns.Select(s => s.Item1).ToList();
                 var nonbasicColumns = model.LHS.EnumerateColumnsIndexed().Where(v => !basicColumnIndices.Contains(v.Item1)).ToList();
                 var bInv = Matrix<double>.Build.DenseOfColumnVectors(basicColumns.Select(s => s.Item2)).Inverse();
                 //Get the P1' P2' etc from the nonbasic columns * inverse basic matrix
-                var primes = model.LHS.EnumerateColumnsIndexed().Select(
+                List<Tuple<int, Vector<double>>> primes = model.LHS.EnumerateColumnsIndexed().Select(
                     s => new Tuple<int, Vector<double>>(s.Item1, bInv.Multiply(s.Item2))
                 ).ToList();
                 var xb = bInv.Multiply(model.RHS);
@@ -41,13 +57,9 @@ namespace RaikesSimplexService.Implementation
                     .Select(s => s.Item2)
                 );
                 //Calculate C1' C2' etc and select the minimum - that's our entering basic variable
-                var enteringCol = primes.Select(
-                    p => (model.ObjectiveRow.At(0, p.Item1) - cb.Multiply(p.Item2)).Select(
-                        s => new Tuple<int, double>(p.Item1, (double)s)
-                    ).First() //There's only ever one element because the width of cb is equal to the height of the primes
-                ).OrderBy(s => s.Item2).FirstOrDefault();
+                var minCnPrime = GetMinCnPrime(primes, model, cb, basicColumnIndices);
                 //If all the C1' C2' etc are positive, then we're done - we've optimized the solution
-                if (enteringCol.Item2 >= 0 || NearlyZero(enteringCol.Item2))
+                if (minCnPrime.Item2 >= 0 || NearlyZero(minCnPrime.Item2))
                 {
                     if (model.ArtificialVariables > 0)
                     {
@@ -94,7 +106,8 @@ namespace RaikesSimplexService.Implementation
                     break;
                 }
                 //else, get the divisor from the Pn' we selected
-                var divisor = primes.Where(s => s.Item1 == enteringCol.Item1).FirstOrDefault().Item2;
+                var enteringVar = minCnPrime;
+                var divisor = primes.Where(s => s.Item1 == enteringVar.Item1).FirstOrDefault().Item2;
                 var ratios = xb.PointwiseDivide(divisor);
                 //Get the minimum ratio that's > 0 - that's our exiting basic variable
                 var exitingCol = ratios.EnumerateIndexed().Where(s => s.Item2 > 0 && !NearlyZero(s.Item2)).OrderBy(s => s.Item2).FirstOrDefault();
@@ -103,7 +116,8 @@ namespace RaikesSimplexService.Implementation
                     sol.Quality = SolutionQuality.Unbounded;
                     break;
                 }
-                var newCol = nonbasicColumns.FirstOrDefault(s => s.Item1 == enteringCol.Item1);
+                var newCol = nonbasicColumns.FirstOrDefault(s => s.Item1 == enteringVar.Item1);
+                //basicColumns[exitingCol.Item1] = newCol;
                 basicColumns.RemoveAt(exitingCol.Item1);
                 int insertHere = 0;
                 foreach (var col in basicColumnIndices)
@@ -115,6 +129,7 @@ namespace RaikesSimplexService.Implementation
                     insertHere++;
                 }
                 basicColumns.Insert(insertHere, newCol);
+
             }
             return sol;
         }
