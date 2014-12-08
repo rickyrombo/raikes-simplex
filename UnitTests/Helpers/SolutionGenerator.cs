@@ -35,7 +35,7 @@ namespace UnitTests.Helpers
         {
             return new Solution
             {
-                AlternateSolutionsExist = false,
+                AlternateSolutionsExist = true,
                 OptimalValue = .6,
                 Quality = SolutionQuality.Optimal,
                 Decisions = new double[] { 3, 0 }
